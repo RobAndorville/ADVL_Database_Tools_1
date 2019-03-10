@@ -40,12 +40,14 @@ Partial Class frmCreateNewDatabase
         Me.btnCreateNewDatabase = New System.Windows.Forms.Button()
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'btnExit
         '
         Me.btnExit.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnExit.Location = New System.Drawing.Point(537, 12)
+        Me.btnExit.Location = New System.Drawing.Point(571, 12)
         Me.btnExit.Name = "btnExit"
         Me.btnExit.Size = New System.Drawing.Size(64, 22)
         Me.btnExit.TabIndex = 9
@@ -64,7 +66,7 @@ Partial Class frmCreateNewDatabase
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(48, 263)
+        Me.Label7.Location = New System.Drawing.Point(6, 109)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(63, 13)
         Me.Label7.TabIndex = 76
@@ -73,7 +75,7 @@ Partial Class frmCreateNewDatabase
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(59, 209)
+        Me.Label6.Location = New System.Drawing.Point(6, 51)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(52, 13)
         Me.Label6.TabIndex = 75
@@ -82,7 +84,7 @@ Partial Class frmCreateNewDatabase
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(73, 183)
+        Me.Label5.Location = New System.Drawing.Point(6, 22)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(38, 13)
         Me.Label5.TabIndex = 74
@@ -92,32 +94,32 @@ Partial Class frmCreateNewDatabase
         '
         Me.txtDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtDescription.Location = New System.Drawing.Point(117, 260)
+        Me.txtDescription.Location = New System.Drawing.Point(75, 106)
         Me.txtDescription.Multiline = True
         Me.txtDescription.Name = "txtDescription"
         Me.txtDescription.ReadOnly = True
-        Me.txtDescription.Size = New System.Drawing.Size(484, 48)
+        Me.txtDescription.Size = New System.Drawing.Size(542, 48)
         Me.txtDescription.TabIndex = 73
         '
         'txtDefaultDir
         '
         Me.txtDefaultDir.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtDefaultDir.Location = New System.Drawing.Point(117, 206)
+        Me.txtDefaultDir.Location = New System.Drawing.Point(75, 48)
         Me.txtDefaultDir.Multiline = True
         Me.txtDefaultDir.Name = "txtDefaultDir"
         Me.txtDefaultDir.ReadOnly = True
-        Me.txtDefaultDir.Size = New System.Drawing.Size(484, 48)
+        Me.txtDefaultDir.Size = New System.Drawing.Size(542, 48)
         Me.txtDefaultDir.TabIndex = 72
         '
         'txtDefaultName
         '
         Me.txtDefaultName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtDefaultName.Location = New System.Drawing.Point(117, 180)
+        Me.txtDefaultName.Location = New System.Drawing.Point(75, 19)
         Me.txtDefaultName.Name = "txtDefaultName"
         Me.txtDefaultName.ReadOnly = True
-        Me.txtDefaultName.Size = New System.Drawing.Size(484, 20)
+        Me.txtDefaultName.Size = New System.Drawing.Size(542, 20)
         Me.txtDefaultName.TabIndex = 71
         '
         'btnFind
@@ -136,7 +138,7 @@ Partial Class frmCreateNewDatabase
         Me.txtDefinitionFilePath.Location = New System.Drawing.Point(117, 126)
         Me.txtDefinitionFilePath.Multiline = True
         Me.txtDefinitionFilePath.Name = "txtDefinitionFilePath"
-        Me.txtDefinitionFilePath.Size = New System.Drawing.Size(484, 48)
+        Me.txtDefinitionFilePath.Size = New System.Drawing.Size(518, 48)
         Me.txtDefinitionFilePath.TabIndex = 69
         '
         'Label4
@@ -155,7 +157,7 @@ Partial Class frmCreateNewDatabase
         Me.txtNewDatabaseDir.Location = New System.Drawing.Point(117, 66)
         Me.txtNewDatabaseDir.Multiline = True
         Me.txtNewDatabaseDir.Name = "txtNewDatabaseDir"
-        Me.txtNewDatabaseDir.Size = New System.Drawing.Size(484, 46)
+        Me.txtNewDatabaseDir.Size = New System.Drawing.Size(518, 46)
         Me.txtNewDatabaseDir.TabIndex = 67
         '
         'txtNewDatabaseName
@@ -164,7 +166,7 @@ Partial Class frmCreateNewDatabase
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtNewDatabaseName.Location = New System.Drawing.Point(117, 40)
         Me.txtNewDatabaseName.Name = "txtNewDatabaseName"
-        Me.txtNewDatabaseName.Size = New System.Drawing.Size(484, 20)
+        Me.txtNewDatabaseName.Size = New System.Drawing.Size(518, 20)
         Me.txtNewDatabaseName.TabIndex = 66
         '
         'Label3
@@ -198,18 +200,30 @@ Partial Class frmCreateNewDatabase
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
+        'GroupBox1
+        '
+        Me.GroupBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Controls.Add(Me.txtDefaultName)
+        Me.GroupBox1.Controls.Add(Me.Label5)
+        Me.GroupBox1.Controls.Add(Me.Label7)
+        Me.GroupBox1.Controls.Add(Me.txtDefaultDir)
+        Me.GroupBox1.Controls.Add(Me.Label6)
+        Me.GroupBox1.Controls.Add(Me.txtDescription)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 180)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(623, 165)
+        Me.GroupBox1.TabIndex = 77
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Information Stored in Definition File:"
+        '
         'frmCreateNewDatabase
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(613, 352)
+        Me.ClientSize = New System.Drawing.Size(647, 356)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.btnSelect)
-        Me.Controls.Add(Me.Label7)
-        Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.txtDescription)
-        Me.Controls.Add(Me.txtDefaultDir)
-        Me.Controls.Add(Me.txtDefaultName)
         Me.Controls.Add(Me.btnFind)
         Me.Controls.Add(Me.txtDefinitionFilePath)
         Me.Controls.Add(Me.Label4)
@@ -221,6 +235,8 @@ Partial Class frmCreateNewDatabase
         Me.Controls.Add(Me.btnExit)
         Me.Name = "frmCreateNewDatabase"
         Me.Text = "Create New Database"
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -244,4 +260,5 @@ Partial Class frmCreateNewDatabase
     Friend WithEvents btnCreateNewDatabase As Button
     Friend WithEvents FolderBrowserDialog1 As FolderBrowserDialog
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
+    Friend WithEvents GroupBox1 As GroupBox
 End Class

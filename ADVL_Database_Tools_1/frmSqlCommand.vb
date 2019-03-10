@@ -230,7 +230,6 @@
         cmbConstraintType.Items.Add("Primary Key")
         cmbConstraintType.Items.Add("Foreign Key")
 
-
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
@@ -427,8 +426,6 @@
 
                 Case "LongText"
                     Main.Message.Add("Column type is LongText" & vbCrLf & vbCrLf)
-                    'DataGridView1.Rows(Row).Cells(2).Value = "" 'Enable Size
-                    'DataGridView1.Rows(Row).Cells(2).ReadOnly = False
                     DataGridView1.Rows(Row).Cells(2).Value = "n/a" 'Disable Size
                     DataGridView1.Rows(Row).Cells(2).ReadOnly = True
                     DataGridView1.Rows(Row).Cells(3).Value = "n/a" 'Disable Precision
@@ -503,16 +500,11 @@
         Dim bldCmd As New System.Text.StringBuilder
         bldCmd.Clear()
         bldCmd.Append("CREATE TABLE " & Trim(txtTableName.Text) & vbCrLf)
-        'Dim I As Integer
-        'Dim LastRow As Integer
         Dim DataTypeString As String
-        'LastRow = DataGridView1.RowCount - 1
 
         If NPrimaryKeys > 1 Then
             Dim J As Integer
-            'Dim PKeys(0 To NPrimaryKeys) As Integer
             Dim PKeys(0 To NPrimaryKeys - 1) As Integer
-            'Dim PKeyNo As Integer = 1
             Dim PKeyNo As Integer = 0
             For I = 1 To LastRow
                 If I = 1 Then
@@ -535,8 +527,6 @@
 
                 'Add any Primary Keys to the PKeys() list:
                 If Trim(DataGridView1.Rows(I - 1).Cells(7).Value) = "Primary Key" Then
-                    'bldCmd.Append(" PRIMARY KEY")
-                    'PKeys(PKeyNo) = I 'Add the position of the primary key to the PKeys() list
                     PKeys(PKeyNo) = I - 1 'Add the position of the primary key to the PKeys() list
                     PKeyNo += 1 'Increment PKeyNo
                 End If
@@ -545,12 +535,9 @@
                     'Add the multi-column primary key contraint:
                     bldCmd.Append("," & vbCrLf) 'end the line
                     bldCmd.Append("CONSTRAINT MultiColPrimKey PRIMARY KEY (")
-                    'For J = 1 To NPrimaryKeys - 1
-                    'For J = 0 To NPrimaryKeys - 1
                     For J = 0 To NPrimaryKeys - 2
                         bldCmd.Append(Trim(DataGridView1.Rows(PKeys(J)).Cells(0).Value) & ", ")
                     Next
-                    'bldCmd.Append(Trim(DataGridView1.Rows(PKeys(NPrimaryKeys)).Cells(0).Value) & ")")
                     bldCmd.Append(Trim(DataGridView1.Rows(PKeys(NPrimaryKeys - 1)).Cells(0).Value) & ")")
 
 
@@ -558,9 +545,6 @@
                 Else
                     bldCmd.Append("," & vbCrLf) 'end the line
                 End If
-
-
-
             Next
         Else
             For I = 1 To LastRow
@@ -779,7 +763,6 @@
 
             End If
 
-
         ElseIf rbDropIndex.Checked = True Then
             Dim IndexName As String
             Dim SelRow As Integer
@@ -808,16 +791,6 @@
             'To allow naming of a UNIQUE constraint, and for defining a UNIQUE constraint on multiple columns, use the following SQL syntax:
             'ALTER TABLE Persons
             'ADD CONSTRAINT uc_PersonID UNIQUE (P_Id,LastName)
-            '
-            '
-            '
-            '
-            '
-            '
-            '
-            '
-            '
-            '
             '
 
         End If
@@ -863,7 +836,6 @@
 
         MaxI = dt.Rows.Count
         For I = 0 To MaxI - 1
-            'dr = dt.Rows(0)
             cmbSelectTable.Items.Add(dt.Rows(I).Item(2).ToString)
         Next I
 
@@ -897,7 +869,6 @@
         Dim dt As DataTable
 
         If cmbSelectTable.SelectedIndex = -1 Then 'No item is selected
-            'lstFields.Items.Clear()
             cmbAlterColumnName.Items.Clear()
             cmbDropColumnName.Items.Clear()
         Else 'A table has been selected. List its fields:
@@ -915,7 +886,6 @@
             conn.Open()
 
             'Specify the commandString to query the database:
-            'commandString = "SELECT * FROM " + cmbSelectTable.SelectedItem.ToString
             commandString = "SELECT Top 500 * FROM " + cmbSelectTable.SelectedItem.ToString
             Dim dataAdapter As New System.Data.OleDb.OleDbDataAdapter(commandString, conn)
             ds = New DataSet
@@ -1384,7 +1354,5 @@
     End Sub
 
 #End Region 'Form Methods ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 
 End Class

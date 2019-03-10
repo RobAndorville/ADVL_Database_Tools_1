@@ -108,7 +108,6 @@
     End Sub
 
 
-
 #End Region 'Process XML Files ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -122,13 +121,6 @@
         DataGridView1.Columns.Add(TextBoxCol0)
         DataGridView1.Columns(0).HeaderText = "Column Name"
         DataGridView1.Columns(0).Width = 160
-
-        'Dim TextBoxCol1 As New DataGridViewTextBoxColumn
-        'DataGridView1.Columns.Add(TextBoxCol1)
-        'DataGridView1.Columns(1).HeaderText = "Type Code"
-        'DataGridView1.Columns(1).Width = 160
-
-
 
         Dim ComboBoxCol1 As New DataGridViewComboBoxColumn
         DataGridView1.Columns.Add(ComboBoxCol1)
@@ -150,27 +142,6 @@
         ComboBoxCol1.Items.Add("LongText")
         ComboBoxCol1.Items.Add("VarChar")
         ComboBoxCol1.Items.Add("Decimal")
-
-        'Dim ComboBoxCol2 As New DataGridViewComboBoxColumn
-        'DataGridView1.Columns.Add(ComboBoxCol2)
-        'DataGridView1.Columns(2).HeaderText = "Type"
-        'DataGridView1.Columns(2).Width = 120
-        ''See Data Type schema for the list of data types.
-        'ComboBoxCol2.Items.Add("Short (Integer)")
-        'ComboBoxCol2.Items.Add("Long (Integer)")
-        'ComboBoxCol2.Items.Add("Single")
-        'ComboBoxCol2.Items.Add("Double")
-        'ComboBoxCol2.Items.Add("Currency")
-        'ComboBoxCol2.Items.Add("DateTime")
-        'ComboBoxCol2.Items.Add("Bit (Boolean)")
-        'ComboBoxCol2.Items.Add("Byte")
-        'ComboBoxCol2.Items.Add("GUID")
-        'ComboBoxCol2.Items.Add("BigBinary")
-        'ComboBoxCol2.Items.Add("LongBinary")
-        'ComboBoxCol2.Items.Add("VarBinary")
-        'ComboBoxCol2.Items.Add("LongText")
-        'ComboBoxCol2.Items.Add("VarChar")
-        'ComboBoxCol2.Items.Add("Decimal")
 
         'Short      2       5                               System.Int16
         'Long       3       10                              System.Int32
@@ -220,36 +191,6 @@
         Dim TextBoxCol8 As New DataGridViewTextBoxColumn
         DataGridView1.Columns.Add(TextBoxCol8)
         DataGridView1.Columns(8).HeaderText = "Description"
-
-        ''Create New Table data:
-        'Dim TextBoxCol3 As New DataGridViewTextBoxColumn
-        'DataGridView1.Columns.Add(TextBoxCol3)
-        'DataGridView1.Columns(3).HeaderText = "Size"
-        'Dim TextBoxCol4 As New DataGridViewTextBoxColumn
-        'DataGridView1.Columns.Add(TextBoxCol4)
-        'DataGridView1.Columns(4).HeaderText = "Precision"
-        'Dim TextBoxCol5 As New DataGridViewTextBoxColumn
-        'DataGridView1.Columns.Add(TextBoxCol5)
-        'DataGridView1.Columns(5).HeaderText = "Scale"
-        'Dim ComboBoxCol6 As New DataGridViewComboBoxColumn
-        'DataGridView1.Columns.Add(ComboBoxCol6)
-        'DataGridView1.Columns(6).HeaderText = "Null/Not Null"
-        'ComboBoxCol6.Items.Add("")
-        'ComboBoxCol6.Items.Add("Null")
-        'ComboBoxCol6.Items.Add("Not Null")
-        'Dim ComboBoxCol7 As New DataGridViewComboBoxColumn
-        'DataGridView1.Columns.Add(ComboBoxCol7)
-        'DataGridView1.Columns(7).HeaderText = "Auto Increment"
-        'ComboBoxCol7.Items.Add("")
-        'ComboBoxCol7.Items.Add("Auto Increment")
-        'Dim ComboBoxCol8 As New DataGridViewComboBoxColumn
-        'DataGridView1.Columns.Add(ComboBoxCol8)
-        'DataGridView1.Columns(8).HeaderText = "Primary Key"
-        'ComboBoxCol8.Items.Add("")
-        'ComboBoxCol8.Items.Add("Primary Key")
-        'Dim TextBoxCol9 As New DataGridViewTextBoxColumn
-        'DataGridView1.Columns.Add(TextBoxCol9)
-        'DataGridView1.Columns(9).HeaderText = "Description"
 
         'Column descriptions:
         Dim TextBoxCol3_0 As New DataGridViewTextBoxColumn
@@ -328,7 +269,6 @@
         cmbIndexOptions.Items.Add("Primary")
         cmbIndexOptions.Items.Add("Disallow Null")
         cmbIndexOptions.Items.Add("Ignore Null")
-        'cmbIndexOptions.Items.Add("Unique")
 
         'Add data types to the Add Columns section of the Miscellaneous tab:
         cmbColumnType.Items.Add("Short (Integer)")
@@ -425,7 +365,6 @@
         dt = conn.GetSchema("Tables", restrictions)
 
         'Fill lstSelectTable
-        'Dim dr As DataRow
         Dim I As Integer 'Loop index
         Dim MaxI As Integer
 
@@ -449,6 +388,8 @@
 
         Dim Row As Integer = e.RowIndex
         Dim Col As Integer = e.ColumnIndex
+
+        If Col = -1 Then Exit Sub
 
         If DataGridView1.Rows(Row).Cells(Col).ReadOnly = False Then
             If DataGridView1.Columns(Col).CellType = GetType(DataGridViewComboBoxCell) Then
@@ -729,7 +670,6 @@
 
             'Add Auto Increment:
             If Trim(DataGridView1.Rows(I - 1).Cells(6).Value) = "Auto Increment" Then
-                'bldCmd.Append(" AUTO_INCREMENT")
                 bldCmd.Append(" IDENTITY(1,1)")
             End If
 
@@ -745,7 +685,6 @@
             End If
 
             If I = LastRow Then
-                'bldCmd.Append(");" & vbCrLf) 'close the brackets containing the column specifications
                 If NPrimaryKeyCols > 1 Then
                     bldCmd.Append("," & vbCrLf)
                 End If
@@ -967,8 +906,6 @@
             Main.Message.Add("Udating column descriptions table: " & vbCrLf)
             Dim I As Integer
             For I = 0 To NFields - 1
-                'aTable.Columns(I).Properties("Description").Value = DataGridView3.Rows(I).Cells(1).Value
-                'Main.Message.Add("Column number: " & I & "   Name: " & aTable.Columns(I).Name & "   Description: " & aTable.Columns(I).Properties("Description").Value.ToString & vbCrLf)
                 If DataGridView3.Rows(I).Cells(1).Value = Nothing Then
                     Main.Message.Add("No description specified for column: " & DataGridView3.Rows(I).Cells(0).Value & vbCrLf)
                 Else
@@ -1060,7 +997,6 @@
             conn.Open()
 
             'Specify the commandString to query the database:
-            'commandString = "SELECT * FROM " + cmbUtilitiesSelectTable.SelectedItem.ToString
             commandString = "SELECT Top 500 * FROM " + cmbUtilitiesSelectTable.SelectedItem.ToString
             Dim dataAdapter As New System.Data.OleDb.OleDbDataAdapter(commandString, conn)
             ds = New DataSet
@@ -1404,7 +1340,6 @@
         'List of columns in DataGridView1:
         '0: Column Name   1: Type   2: Size   3: Precision   4: Scale   5: Null/Not Null   6: Auto Increment   7: Primary Key 8: Description
 
-        'If Col = 1 Then 'Column Type selected:
         Select Case cmbColumnType.Text
             Case "Short (Integer)"
                 Main.Message.Add("Column type is Short (Integer)" & vbCrLf & vbCrLf)
@@ -1879,10 +1814,6 @@
                     txtTableDefFileName.Text = tableDefFileName
                     tableDefXDoc = XDocument.Load(tableDefFileName)
                     ReadTableDefXDoc()
-                    'Read database name, directory and description:
-                    'txtDefaultName.Text = databaseDefXDoc.<DatabaseDefinition>.<Summary>.<DatabaseName>.Value
-                    'txtDefaultDir.Text = databaseDefXDoc.<DatabaseDefinition>.<Summary>.<DatabaseDirectory>.Value
-                    'txtDescription.Text = databaseDefXDoc.<DatabaseDefinition>.<Description>.Value
                 End If
             Case ADVL_Utilities_Library_1.FileLocation.Types.Archive
                 'Select a Database Definition file from the project archive:
@@ -1935,7 +1866,6 @@
             RowNo = item.<OrdinalPosition>.Value
             DataGridView1.Rows(RowNo - 1).Cells(0).Value = item.<ColumnName>.Value 'Write the Column Name.
 
-            'Select Case item.<DataType>.Value
             '        'List of database data types:
             '        'http://support.microsoft.com/kb/320435
 
@@ -2031,7 +1961,7 @@
                 If DataGridView1.Rows(I - 1).Cells(0).Value = PrimaryKeyColName Then
                     DataGridView1.Rows(I - 1).Cells(7).Value = "Primary Key"
                 Else
-                    'DataGridView1.Rows(I - 1).Cells(8).Value = "" 'Dont do this. If there are multiple keys, it will change earlier Primary Key flags.
+
                 End If
             Next
         Next
@@ -2071,17 +2001,6 @@
         aDB = Nothing
         aTable = Nothing
         aConn.Close()
-
-        'Dim SelectedColumnIndex As Integer
-        'SelectedColumnIndex = cmbUtilitiesSelectColumn.SelectedIndex
-        'UpdateCmbUtilitiesSelectColumn()
-        'cmbUtilitiesSelectColumn.SelectedIndex = SelectedColumnIndex
-
-        'If cmbUtilitiesSelectTable.Text = cmbDescrSelectTable.Text Then
-        '    'The Descriptions list is from the same table that has just been changed.
-        '    'Redisplay the discriptions list to show the changed column name:
-        '    RefreshDescriptions()
-        'End If
 
         'Update the list of tables on the Database form:
         Main.FillLstTables()

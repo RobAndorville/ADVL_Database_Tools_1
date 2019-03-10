@@ -24,7 +24,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationRevision>8</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -63,10 +63,11 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>FCC4AA5806E3AEE8AF91B27B7196B3E8E847BB25</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>02DF78384330D74EF31971C49CB37DC1AD74ADE9</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ADVL_Database_Tools_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -120,6 +121,12 @@
     <Compile Include="frmCreateNewTable.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmHtmlDisplay.Designer.vb">
+      <DependentUpon>frmHtmlDisplay.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmHtmlDisplay.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmModifyDatabase.Designer.vb">
       <DependentUpon>frmModifyDatabase.vb</DependentUpon>
     </Compile>
@@ -154,6 +161,18 @@
       <DependentUpon>frmViewSchema.vb</DependentUpon>
     </Compile>
     <Compile Include="frmViewSchema.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWebPage.Designer.vb">
+      <DependentUpon>frmWebPage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmWebPage.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWebPageList.Designer.vb">
+      <DependentUpon>frmWebPageList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmWebPageList.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Main.vb">
@@ -192,6 +211,9 @@
     <EmbeddedResource Include="frmCreateNewTable.resx">
       <DependentUpon>frmCreateNewTable.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmHtmlDisplay.resx">
+      <DependentUpon>frmHtmlDisplay.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmModifyDatabase.resx">
       <DependentUpon>frmModifyDatabase.vb</DependentUpon>
     </EmbeddedResource>
@@ -209,6 +231,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmViewSchema.resx">
       <DependentUpon>frmViewSchema.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWebPage.resx">
+      <DependentUpon>frmWebPage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWebPageList.resx">
+      <DependentUpon>frmWebPageList.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.vb</DependentUpon>

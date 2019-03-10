@@ -95,13 +95,6 @@
         RestoreFormSettings()   'Restore the form settings
 
         'Set up DataGridView1:
-        'DataGridView1.ColumnCount = 5
-        'DataGridView1.Columns(0).HeaderText = "Name"
-        'DataGridView1.Columns(1).HeaderText = "Primary Key"
-        'DataGridView1.Columns(2).HeaderText = "Data Type"
-        'DataGridView1.Columns(3).HeaderText = "String Length"
-        'DataGridView1.Columns(4).HeaderText = "Allow DB Null"
-        'DataGridView1.Columns(5).HeaderText = "Auto Increment"
 
         DataGridView1.ColumnCount = 1
         DataGridView1.Columns(0).HeaderText = "Name"
@@ -120,25 +113,19 @@
         DataGridView1.Columns.Add(dgvCheckAutoInc)
         DataGridView1.Columns(5).HeaderText = "AutoIncrement"
 
-        'dgvCombo.Items.Add("VarChar")
-        'dgvCombo.Items.Add("Bit")
-        'dgvCombo.Items.Add("Date")
-        'dgvCombo.Items.Add("Int")
+
         dgvCombo.Items.Add("String")
-        'dgvCombo.Items.Add("Integer")
         dgvCombo.Items.Add("Short (16 bit Integer)")
         dgvCombo.Items.Add("Long (32 bit Integer)")
         dgvCombo.Items.Add("Single")
         dgvCombo.Items.Add("Double")
         dgvCombo.Items.Add("Numeric")
         dgvCombo.Items.Add("Currency")
-        'dgvCombo.Items.Add("Date")
         dgvCombo.Items.Add("DateTime")
         dgvCombo.Items.Add("Boolean")
         dgvCombo.Items.Add("Bit")
         dgvCombo.Items.Add("Byte")
         dgvCombo.Items.Add("GUID")
-
 
     End Sub
 
@@ -154,7 +141,6 @@
             'Dont save settings if form is minimised.
         End If
     End Sub
-
 
 
 #End Region 'Form Display Methods -------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -177,10 +163,6 @@
                     txtTableDefFile.Text = tableDefFileName
                     tableDefXDoc = XDocument.Load(tableDefFileName)
                     ReadTableDefXDoc()
-                    'Read database name, directory and description:
-                    'txtDefaultName.Text = databaseDefXDoc.<DatabaseDefinition>.<Summary>.<DatabaseName>.Value
-                    'txtDefaultDir.Text = databaseDefXDoc.<DatabaseDefinition>.<Summary>.<DatabaseDirectory>.Value
-                    'txtDescription.Text = databaseDefXDoc.<DatabaseDefinition>.<Description>.Value
                 End If
             Case ADVL_Utilities_Library_1.FileLocation.Types.Archive
                 'Select a Database Definition file from the project archive:
@@ -212,7 +194,6 @@
         DataGridView1.Rows.Clear()
         Dim Database As String = tableDefXDoc.<TableDefinition>.<Summary>.<Database>.Value
         Dim TableName As String = tableDefXDoc.<TableDefinition>.<Summary>.<TableName>.Value
-        'txtNewTableName.Text = Trim(TableName)
         txtTableName.Text = Trim(TableName)
         Dim NumberOfColumns As Integer = tableDefXDoc.<TableDefinition>.<Summary>.<NumberOfColumns>.Value
         Dim NumberOfPrimaryKeys As Integer = tableDefXDoc.<TableDefinition>.<Summary>.<NumberOfPrimaryKeys>.Value
@@ -227,7 +208,6 @@
             RowNo = item.<OrdinalPosition>.Value
             DataGridView1.Rows(RowNo - 1).Cells(0).Value = item.<ColumnName>.Value 'Write the Column Name.
 
-            'Select Case item.<DataType>.Value
             '        'List of database data types:
             '        'http://support.microsoft.com/kb/320435
 
@@ -251,31 +231,22 @@
 
             Select Case item.<DataType>.Value
                 Case 2 'SmallInt (Short)
-                    'DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Short (Integer)"
                     DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Short (Integer)"
                 Case 3 'Integer (Long)
-                    'DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Long (Integer)"
                     DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Long (Integer)"
                 Case 4 'Single
-                    'DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Single"
                     DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Single"
                 Case 5 'Double
-                    'DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Double"
                     DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Double"
                 Case 6 'Currency
-                    'DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Currency"
                     DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Currency"
                 Case 7 'Date (DateTime)
-                    'DataGridView1.Rows(RowNo - 1).Cells(1).Value = "DateTime"
                     DataGridView1.Rows(RowNo - 1).Cells(2).Value = "DateTime"
                 Case 11 'Boolean (Bit)
-                    'DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Bit (Boolean)"
                     DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Bit (Boolean)"
                 Case 17 'UnsignedTinyInt (Byte)
-                    'DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Byte"
                     DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Byte"
                 Case 72 'Guid (GUID)
-                    'DataGridView1.Rows(RowNo - 1).Cells(1).Value = "GUID"
                     DataGridView1.Rows(RowNo - 1).Cells(2).Value = "GUID"
                       'View Schema: Data Types: 
                             'Type Name  Provider Db Type    Native Data Type
@@ -284,30 +255,21 @@
                             'VarBinary  204                 128 (Column size: 510) (Max length parameter required)
                 Case 128 'Binary
                     If item.<CharMaxLength>.Value = 4000 Then
-                        'DataGridView1.Rows(RowNo - 1).Cells(1).Value = "BigBinary"
                         DataGridView1.Rows(RowNo - 1).Cells(2).Value = "BigBinary"
                     ElseIf item.<CharMaxLength>.Value = 1073741823 Then
-                        'DataGridView1.Rows(RowNo - 1).Cells(1).Value = "LongBinary"
                         DataGridView1.Rows(RowNo - 1).Cells(2).Value = "LongBinary"
                     Else
-                        'DataGridView1.Rows(RowNo - 1).Cells(1).Value = "VarBinary"
                         DataGridView1.Rows(RowNo - 1).Cells(2).Value = "VarBinary"
-                        'DataGridView1.Rows(RowNo - 1).Cells(2).Value = item.<CharMaxLength>.Value
                         DataGridView1.Rows(RowNo - 1).Cells(3).Value = item.<CharMaxLength>.Value
                     End If
 
                 Case 130 'WChar
-                    'DataGridView1.Rows(RowNo - 1).Cells(1).Value = "VarChar"
                     DataGridView1.Rows(RowNo - 1).Cells(2).Value = "VarChar"
-                    'DataGridView1.Rows(RowNo - 1).Cells(2).Value = item.<CharMaxLength>.Value
                     DataGridView1.Rows(RowNo - 1).Cells(3).Value = item.<CharMaxLength>.Value
+
                 Case 131 'Numeric (Decimal)
-                    'DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Decimal"
                     DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Decimal"
-                    'DataGridView1.Rows(RowNo - 1).Cells(3).Value = item.<Precision>.Value
-                    '   DataGridView1.Rows(RowNo - 1).Cells(3).Value = item.<Precision>.Value
-                    'DataGridView1.Rows(RowNo - 1).Cells(4).Value = item.<Scale>.Value
-                    '   DataGridView1.Rows(RowNo - 1).Cells(4).Value = item.<Scale>.Value
+
                 Case Else
                     Main.Message.SetWarningStyle()
                     Main.Message.Add("Unrecognized data type: " & item.<DataType>.Value & vbCrLf)
@@ -315,30 +277,22 @@
             End Select
 
             If item.<IsNullable>.Value = "True" Then
-                'DataGridView1.Rows(RowNo - 1).Cells(5).Value = "Null"
                 DataGridView1.Rows(RowNo - 1).Cells(4).Value = True
             Else
-                'DataGridView1.Rows(RowNo - 1).Cells(5).Value = "Not Null"
                 DataGridView1.Rows(RowNo - 1).Cells(4).Value = False
             End If
 
             If item.<AutoIncrement>.Value = "true" Then
-                'DataGridView1.Rows(RowNo - 1).Cells(6).Value = "Auto Increment"
                 DataGridView1.Rows(RowNo - 1).Cells(5).Value = True
             Else
-                'DataGridView1.Rows(RowNo - 1).Cells(6).Value = ""
                 DataGridView1.Rows(RowNo - 1).Cells(5).Value = False
             End If
 
             If item.<CharMaxLength>.Value = "" Then
-                'DataGridView1.Rows(RowNo - 1).Cells(2).Value = ""
                 DataGridView1.Rows(RowNo - 1).Cells(3).Value = ""
             Else
-                'DataGridView1.Rows(RowNo - 1).Cells(2).Value = item.<CharMaxLength>.Value
                 DataGridView1.Rows(RowNo - 1).Cells(3).Value = item.<CharMaxLength>.Value
             End If
-            'DataGridView1.Rows(RowNo - 1).Cells(8).Value = item.<Description>.Value
-            'DataGridView1.Rows(RowNo - 1).Cells(8).Value = item.<Description>.Value
 
         Next
 
@@ -346,10 +300,9 @@
             PrimaryKeyColName = item.Value
             For I = 1 To DataGridView1.Rows.Count
                 If DataGridView1.Rows(I - 1).Cells(0).Value = PrimaryKeyColName Then
-                    'DataGridView1.Rows(I - 1).Cells(7).Value = "Primary Key"
                     DataGridView1.Rows(I - 1).Cells(1).Value = True
                 Else
-                    'DataGridView1.Rows(I - 1).Cells(8).Value = "" 'Dont do this. If there are multiple keys, it will change earlier Primary Key flags.
+
                 End If
             Next
         Next
@@ -404,20 +357,14 @@
                     DataGridView1.Rows(RowCount - 2).Cells(2).Value = "String"
                 Case "System.Int16"
                     DataGridView1.Rows(RowCount - 2).Cells(2).Value = "Short (16 bit Integer)"
-                'Case "System.Int32"
-                '    DataGridView1.Rows(RowCount - 2).Cells(2).Value = "Integer"
                 Case "System.Int32"
                     DataGridView1.Rows(RowCount - 2).Cells(2).Value = "Long (32 bit Integer)"
                 Case "System.Single"
                     DataGridView1.Rows(RowCount - 2).Cells(2).Value = "Single"
                 Case "System.Double"
                     DataGridView1.Rows(RowCount - 2).Cells(2).Value = "Double"
-                'Case "System.Decimal"
-                '    DataGridView1.Rows(RowCount - 2).Cells(2).Value = "Numeric"
                 Case "System.Decimal"
                     DataGridView1.Rows(RowCount - 2).Cells(2).Value = "Currency"
-                'Case "System.DateTime"
-                '    DataGridView1.Rows(RowCount - 2).Cells(2).Value = "Date"
                 Case "System.DateTime"
                     DataGridView1.Rows(RowCount - 2).Cells(2).Value = "DateTime"
                 Case "System.Boolean"
@@ -428,10 +375,6 @@
                     DataGridView1.Rows(RowCount - 2).Cells(2).Value = "Byte"
                 Case "System.Guid"
                     DataGridView1.Rows(RowCount - 2).Cells(2).Value = "GUID"
-
-
-
-
 
                 Case Else
                     Main.Message.SetWarningStyle()
@@ -447,18 +390,14 @@
                 DataGridView1.Rows(RowCount - 2).Cells(5).Value = True
             End If
 
-            'If item.<StringFieldLength>.Value = "-1" Then
             If item.<MaxLength>.Value = "-1" Then
                 DataGridView1.Rows(RowCount - 2).Cells(3).Value = ""
             Else
-                'DataGridView1.Rows(RowCount - 2).Cells(3).Value = item.<StringFieldLength>.Value
                 DataGridView1.Rows(RowCount - 2).Cells(3).Value = item.<MaxLength>.Value
             End If
         Next
 
         For Each item In tableDefXDoc.<TableDefinition>.<PrimaryKeys>.<Key>
-            'PrimaryKeys(I) = item.Value
-            'I = I + 1
             PrimaryKey = item.Value
             For I = 1 To DataGridView1.Rows.Count
                 If DataGridView1.Rows(I - 1).Cells(0).Value = PrimaryKey Then
@@ -481,41 +420,16 @@
 
         Dim connString As String
         Dim myConnection As OleDb.OleDbConnection = New OleDb.OleDbConnection
-        'Dim ds As DataSet = New DataSet
-        'Dim da As OleDb.OleDbDataAdapter
-        'Dim tables As DataTableCollection = ds.Tables
-
-        'Dim dt As DataTable
-
-
-        'TableName = cmbSelectTable.SelectedItem.ToString
-
-        'txtQuery.Text = "Select * From " & TableName
 
         'NOTE: Check that a database has been created before adding a table!!!
 
         connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source =" & Main.DatabasePath
         myConnection.ConnectionString = connString
         myConnection.Open()
-        'da = New OleDb.OleDbDataAdapter("Select * from " & TableName, myConnection)
-
 
         Dim bldCmd As New System.Text.StringBuilder
         Dim RowNo As Integer
         Dim RowCount As Integer = DataGridView1.Rows.Count - 1
-
-        'transactionid INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        'salesman CHAR(20) NOT NULL,
-        'amount FLOAT
-
-        'customer_id int NOT NULL AUTO_INCREMENT,
-        'customer_name char(20) NOT NULL,
-        'PRIMARY KEY (customer_id)
-
-        'Img_ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-
-        'Img_Id INT NOT NULL AUTO_INCREMENT FOREIGN KEY,
-
 
         bldCmd.Append("Create Table " & txtTableName.Text & " (")
         For RowNo = 1 To RowCount
@@ -530,7 +444,7 @@
                     If DataGridView1.Rows(RowNo - 1).Cells(1).Value = True Then
                         bldCmd.Append(" Primary Key")
                     End If
-                'Case "Date"
+
                 Case "DateTime"
                     bldCmd.Append(DataGridView1.Rows(RowNo - 1).Cells(0).Value & " DateTime")
                     If DataGridView1.Rows(RowNo - 1).Cells(4).Value = False Then
@@ -541,6 +455,7 @@
                     If DataGridView1.Rows(RowNo - 1).Cells(1).Value = True Then
                         bldCmd.Append(" Primary Key")
                     End If
+
                 Case "Integer"
                     bldCmd.Append(DataGridView1.Rows(RowNo - 1).Cells(0).Value & " Integer")
                     If DataGridView1.Rows(RowNo - 1).Cells(4).Value = False Then
@@ -554,6 +469,7 @@
                     If DataGridView1.Rows(RowNo - 1).Cells(1).Value = True Then
                         bldCmd.Append(" Primary Key")
                     End If
+
                 Case "Numeric"
                     bldCmd.Append(DataGridView1.Rows(RowNo - 1).Cells(0).Value & " Float")
                     If DataGridView1.Rows(RowNo - 1).Cells(4).Value = False Then
@@ -564,6 +480,7 @@
                     If DataGridView1.Rows(RowNo - 1).Cells(1).Value = True Then
                         bldCmd.Append(" Primary Key")
                     End If
+
                 Case "Boolean"
                     bldCmd.Append(DataGridView1.Rows(RowNo - 1).Cells(0).Value & " Boolean")
                     If DataGridView1.Rows(RowNo - 1).Cells(4).Value = False Then
@@ -602,7 +519,6 @@
 
         myConnection.Close()
     End Sub
-
 
 #End Region 'Form Methods ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

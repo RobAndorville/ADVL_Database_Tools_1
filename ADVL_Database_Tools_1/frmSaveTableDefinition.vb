@@ -134,8 +134,6 @@
         Main.myConnection.ConnectionString = connString
         Main.myConnection.Open()
 
-        'Dim myTable As DataTable = Nothing
-        'myTable = Main.myConnection.GetSchema("Tables", New String() {Nothing, Nothing, Nothing, Nothing, "TABLE"})
         Dim myColumns As DataTable = Nothing
         myColumns = Main.myConnection.GetSchema("Columns", New String() {Nothing, Nothing, Main.ds.Tables(0).TableName})
         Dim ColumnName As String
@@ -155,12 +153,9 @@
         'Add table summary
         Dim summary = New XElement("Summary")
         summary.Add(New XElement("Database", Main.DatabasePath))
-        'summary.Add(New XElement("TableName", ds.Tables(0).TableName))
         summary.Add(New XElement("TableName", Main.ds.Tables(0).TableName))
-        'summary.Add(New XElement("NumberOfColumns", ds.Tables(0).Columns.Count))
         summary.Add(New XElement("NumberOfColumns", Main.ds.Tables(0).Columns.Count))
         summary.Add(New XElement("NumberOfPrimaryKeys", Main.ds.Tables(0).PrimaryKey.Count))
-        'summary.Add(New XElement("PrimaryKey", ds.Tables(0).PrimaryKey))
 
         tableData.Add(summary)
 
@@ -174,11 +169,6 @@
         Next
 
         tableData.Add(primaryKeys)
-
-        'Add column definitions:
-        'Dim ColNo As Integer
-        'Dim NCols As Integer
-        'NCols = Main.ds.Tables(0).Columns.Count
 
         Dim columns As New XElement("Columns")
 
@@ -200,27 +190,7 @@
                 setting4d = New XElement("Scale", myRow("NUMERIC_SCALE"))
             End If
             Dim setting5 As New XElement("CharMaxLength", myRow("CHARACTER_MAXIMUM_LENGTH").ToString)
-            'Dim setting6 As New XElement("AutoIncrement", ds.Tables(TableName).Columns(ColumnName).AutoIncrement)
             Dim setting6 As New XElement("AutoIncrement", Main.ds.Tables(0).Columns(ColumnName).AutoIncrement)
-
-            ''Find any Indexed fields:
-            'Dim foundRows() As DataRow
-            'foundRows = schemaTable.Select("COLUMN_NAME = '" & ColumnName & "'") 'Search for Indexes associated with with the column having the name ColumnName.
-            'Dim setting7 As XElement
-            'If foundRows.Count = 0 Then
-            '    setting7 = New XElement("Indexed", "No")
-            'Else
-            '    If foundRows(0).Item("PRIMARY_KEY") = True Then
-            '        'This field is a primary key: these are indexed by default.
-            '        setting7 = New XElement("Indexed", "PrimaryKey")
-            '    Else
-            '        If foundRows(0).Item("UNIQUE") = True Then
-            '            setting7 = New XElement("Indexed", "Yes_NoDupl")
-            '        Else
-            '            setting7 = New XElement("Indexed", "Yes_DuplOk")
-            '        End If
-            '    End If
-            'End If
 
             Dim setting8 As New XElement("Description", myRow("DESCRIPTION").ToString)
 
@@ -233,17 +203,14 @@
                 column.Add(setting4c)
                 column.Add(setting4d)
             End If
-            'column.Add(setting4e)
             column.Add(setting5)
             column.Add(setting6)
-            'column.Add(setting7)
             column.Add(setting8)
 
             columns.Add(column) 'Add the next column to the set of columns.
 
         Next
 
-        'doc.Add(records)
         tableData.Add(New XComment(""))
         tableData.Add(New XComment("List of column definitions."))
         tableData.Add(columns)
@@ -251,7 +218,6 @@
         'Add Relations:
         Dim relations = New XElement("Relations")
         Dim RelCount As Integer
-        'RelCount = ds.Tables(0).ChildRelations.Count
         RelCount = Main.ds.Tables(0).DataSet.Relations.Count
 
         relations.Add(New XElement("NumberOfChildRelations", RelCount))
@@ -274,17 +240,6 @@
 
         doc.Add(tableData)
 
-        'Dim SaveFilePath As String
-        'SaveFilePath = SaveFileDialog1.FileName
-
-        'If IO.Path.GetExtension = "
-        'SaveFilePath = IO.Path.GetFileNameWithoutExtension(SaveFilePath) & ".TableDef"
-        'SaveFilePath = IO.Path.GetFullPath(SaveFilePath) & IO.Path.GetFileNameWithoutExtension(SaveFilePath) & ".TableDef"
-
-        'SaveFilePath = IO.Path.GetDirectoryName(SaveFilePath) & "\" & IO.Path.GetFileNameWithoutExtension(SaveFilePath) & ".TableDef"
-
-        'doc.Save(SaveFileDialog1.FileName)
-        'doc.Save(SaveFilePath)
         Main.Project.SaveXmlData(FileName, doc)
 
         Main.myConnection.Close()
@@ -302,17 +257,6 @@
         '       ...
 
 
-        'SaveFileDialog1.Filter = "Table Definition |*.TableDef"
-
-        'Dim FilePath As String
-        'If Trim(Main.ProjectPath) <> "" Then 'Write the Form Settings file in the Project Directory
-        '    FilePath = Main.ProjectPath
-        'Else 'Write the Form Settings file in the Application Directory
-        '    FilePath = Main.ApplicationDir
-        'End If
-
-        'SaveFileDialog1.InitialDirectory = FilePath
-
         Dim FileName As String = Trim(txtFileName.Text)
         If FileName.EndsWith(".TableDef") Then
             'FileName has the correct extension.
@@ -321,13 +265,6 @@
             FileName = FileName & ".TableDef"
             txtFileName.Text = FileName
         End If
-
-
-        'If SaveFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
-
-        'ds.Tables(0).WriteXmlSchema(SaveFileDialog1.FileName)
-        'ds.Tables(0).WriteXml(SaveFileDialog1.FileName)
-        'ds.Tables(0).WriteXmlSchema(SaveFileDialog1.FileName, True)
 
         Dim doc = New XDocument 'Create the XDocument to hold the XML data.
 
@@ -346,12 +283,9 @@
         'Add table summary
         Dim summary = New XElement("Summary")
         summary.Add(New XElement("Database", Main.DatabasePath))
-        'summary.Add(New XElement("TableName", ds.Tables(0).TableName))
         summary.Add(New XElement("TableName", Main.ds.Tables(0).TableName))
-        'summary.Add(New XElement("NumberOfColumns", ds.Tables(0).Columns.Count))
         summary.Add(New XElement("NumberOfColumns", Main.ds.Tables(0).Columns.Count))
         summary.Add(New XElement("NumberOfPrimaryKeys", Main.ds.Tables(0).PrimaryKey.Count))
-        'summary.Add(New XElement("PrimaryKey", ds.Tables(0).PrimaryKey))
 
         tableData.Add(summary)
 
@@ -373,31 +307,17 @@
         Dim columns = New XElement("Columns")
         For ColNo = 1 To NCols
             Dim column = New XElement("Column")
-            'For ColNo = 1 To NCols
-            'Dim field = New XElement(FieldName(ColNo - 1), TDS_Finances.ViewTables.DataGridView1.Rows(RowNo - 1).Cells(ColNo - 1).Value.ToString)
-            'record.Add(field)
-            'Next
             Dim setting1 = New XElement("ColumnName", Main.ds.Tables(0).Columns(ColNo - 1).ColumnName)
             column.Add(setting1)
             Dim setting2 = New XElement("DataType", Main.ds.Tables(0).Columns(ColNo - 1).DataType)
             column.Add(setting2)
-            'Dim setting3 = New XElement("MaxLength", ds.Tables(0).Columns(ColNo - 1).MaxLength) 'This returns -1
-            'column.Add(setting3)
-            'Dim setting3 = New XElement("Capton", ds.Tables(0).Columns(ColNo - 1).Caption)
-            'column.Add(setting3)
-            'Dim setting8 = New XElement("Attributes", ds.Tables(0).Columns(ColNo - 1).DataType.Attributes)
-            'column.Add(setting8)
             Dim setting4 = New XElement("AllowDBNull", Main.ds.Tables(0).Columns(ColNo - 1).AllowDBNull)
             column.Add(setting4)
             Dim setting5 = New XElement("AutoIncrement", Main.ds.Tables(0).Columns(ColNo - 1).AutoIncrement)
             column.Add(setting5)
-            'Dim setting6 = New XElement("StringFieldLength", Main.ds.Tables(0).Columns(ColNo - 1).MaxLength)
             Dim setting6 = New XElement("MaxLength", Main.ds.Tables(0).Columns(ColNo - 1).MaxLength)
             column.Add(setting6)
-            'Dim settings7 = New XElement("MaxLen", ds.Tables(0).Columns(ColNo - 1).MaxLength)
             columns.Add(column)
-
-            'Dim setting7 = New XElement("Test", Main.ds.Tables(0).Columns(ColNo - 1).ExtendedProperties())
         Next
 
         'doc.Add(records)
@@ -408,7 +328,6 @@
         'Add Relations:
         Dim relations = New XElement("Relations")
         Dim RelCount As Integer
-        'RelCount = ds.Tables(0).ChildRelations.Count
         RelCount = Main.ds.Tables(0).DataSet.Relations.Count
 
         relations.Add(New XElement("NumberOfChildRelations", RelCount))
@@ -428,30 +347,11 @@
         tableData.Add(New XComment("List of table relations."))
         tableData.Add(relations)
 
-
         doc.Add(tableData)
 
-        'Dim SaveFilePath As String
-        'SaveFilePath = SaveFileDialog1.FileName
-
-        'If IO.Path.GetExtension = "
-        'SaveFilePath = IO.Path.GetFileNameWithoutExtension(SaveFilePath) & ".TableDef"
-        'SaveFilePath = IO.Path.GetFullPath(SaveFilePath) & IO.Path.GetFileNameWithoutExtension(SaveFilePath) & ".TableDef"
-
-        'SaveFilePath = IO.Path.GetDirectoryName(SaveFilePath) & "\" & IO.Path.GetFileNameWithoutExtension(SaveFilePath) & ".TableDef"
-
-        'doc.Save(SaveFileDialog1.FileName)
-        'doc.Save(SaveFilePath)
         Main.Project.SaveXmlData(FileName, doc)
 
-        'Else
-
-        'End If
-
-
     End Sub
-
-
 
 #End Region 'Form Methods ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

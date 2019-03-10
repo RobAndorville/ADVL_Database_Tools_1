@@ -126,7 +126,6 @@
         Dim NCols As Integer
         NCols = 5 'The number of properties shown
         DataGridView1.ColumnCount = NCols
-        'DataGridView1.ColumnHeadersDefaultCellStyle.Font = New Font(DataGridView1.Font, FontStyle.Bold)
         DataGridView1.Columns(0).HeaderText = "Column Name"
         DataGridView1.Columns(1).HeaderText = "Data Type"
         DataGridView1.Columns(2).HeaderText = "Allow DB Null"
@@ -137,7 +136,6 @@
         NRows = ds.Tables(0).Columns.Count 'The number of fields in the table
 
         DataGridView1.Rows.Clear()
-        'DataGridView1.AutoResizeColumns()
 
         DataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
         DataGridView1.AutoResizeColumns()
@@ -151,16 +149,11 @@
             DataGridView1.Rows(I - 1).Cells(2).Value = ds.Tables(0).Columns(I - 1).AllowDBNull
             DataGridView1.Rows(I - 1).Cells(3).Value = ds.Tables(0).Columns(I - 1).AutoIncrement
             DataGridView1.Rows(I - 1).Cells(4).Value = ds.Tables(0).Columns(I - 1).MaxLength
-            'DataGridView1.Rows(I - 1).Cells(2).Value = ds.Tables(0).Columns(I - 1).Unique
 
         Next
         'List of column properties:
         'AllowDBNull, AutoIncrement, AutoIncrementSeed, AutoIncrementStep, Caption, ColumnMapping, ColumnName, Container, DataType, DateTimeMode
         'DefaultValue, DesignMode, MaxLength, Ordinal, ReadOnly, Site, Table, Unique
-
-        'DataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
-        'DataGridView1.AutoResizeColumns()
-        'DataGridView1.AutoResizeColumnHeadersHeight()
 
     End Sub
 
