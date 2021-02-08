@@ -25,6 +25,23 @@ Partial Class frmSqlCommand
         Me.btnExit = New System.Windows.Forms.Button()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.ComboBox3 = New System.Windows.Forms.ComboBox()
+        Me.Label25 = New System.Windows.Forms.Label()
+        Me.ComboBox2 = New System.Windows.Forms.ComboBox()
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.Button4 = New System.Windows.Forms.Button()
+        Me.Button3 = New System.Windows.Forms.Button()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Label22 = New System.Windows.Forms.Label()
+        Me.DataGridView3 = New System.Windows.Forms.DataGridView()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.btnDelete = New System.Windows.Forms.Button()
+        Me.btnMoveDown = New System.Windows.Forms.Button()
+        Me.btnMoveUp = New System.Windows.Forms.Button()
+        Me.btnInsert = New System.Windows.Forms.Button()
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
         Me.txtTableName = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -91,8 +108,15 @@ Partial Class frmSqlCommand
         Me.txtCommand = New System.Windows.Forms.TextBox()
         Me.btnClearCommand = New System.Windows.Forms.Button()
         Me.btnApplyCommand = New System.Windows.Forms.Button()
+        Me.btnReadTableDefFile = New System.Windows.Forms.Button()
+        Me.txtTableDefFile = New System.Windows.Forms.TextBox()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.txtDatabase = New System.Windows.Forms.TextBox()
+        Me.btnSave = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
+        CType(Me.DataGridView3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
         CType(Me.DataGridView2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -102,7 +126,7 @@ Partial Class frmSqlCommand
         'btnExit
         '
         Me.btnExit.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnExit.Location = New System.Drawing.Point(765, 12)
+        Me.btnExit.Location = New System.Drawing.Point(660, 12)
         Me.btnExit.Name = "btnExit"
         Me.btnExit.Size = New System.Drawing.Size(64, 22)
         Me.btnExit.TabIndex = 9
@@ -118,21 +142,193 @@ Partial Class frmSqlCommand
         Me.TabControl1.Location = New System.Drawing.Point(12, 40)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(817, 465)
+        Me.TabControl1.Size = New System.Drawing.Size(712, 465)
         Me.TabControl1.TabIndex = 10
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.btnSave)
+        Me.TabPage1.Controls.Add(Me.txtDatabase)
+        Me.TabPage1.Controls.Add(Me.Label26)
+        Me.TabPage1.Controls.Add(Me.ComboBox3)
+        Me.TabPage1.Controls.Add(Me.Label25)
+        Me.TabPage1.Controls.Add(Me.ComboBox2)
+        Me.TabPage1.Controls.Add(Me.Label24)
+        Me.TabPage1.Controls.Add(Me.ComboBox1)
+        Me.TabPage1.Controls.Add(Me.Label23)
+        Me.TabPage1.Controls.Add(Me.Button4)
+        Me.TabPage1.Controls.Add(Me.Button3)
+        Me.TabPage1.Controls.Add(Me.Button2)
+        Me.TabPage1.Controls.Add(Me.Button1)
+        Me.TabPage1.Controls.Add(Me.Label22)
+        Me.TabPage1.Controls.Add(Me.DataGridView3)
+        Me.TabPage1.Controls.Add(Me.Label21)
+        Me.TabPage1.Controls.Add(Me.btnDelete)
+        Me.TabPage1.Controls.Add(Me.btnMoveDown)
+        Me.TabPage1.Controls.Add(Me.btnMoveUp)
+        Me.TabPage1.Controls.Add(Me.btnInsert)
         Me.TabPage1.Controls.Add(Me.DataGridView1)
         Me.TabPage1.Controls.Add(Me.txtTableName)
         Me.TabPage1.Controls.Add(Me.Label1)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(809, 439)
+        Me.TabPage1.Size = New System.Drawing.Size(704, 439)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Create Table"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'ComboBox3
+        '
+        Me.ComboBox3.FormattingEnabled = True
+        Me.ComboBox3.Location = New System.Drawing.Point(62, 412)
+        Me.ComboBox3.Name = "ComboBox3"
+        Me.ComboBox3.Size = New System.Drawing.Size(151, 21)
+        Me.ComboBox3.TabIndex = 63
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.Location = New System.Drawing.Point(62, 396)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(65, 13)
+        Me.Label25.TabIndex = 62
+        Me.Label25.Text = "Primary Key:"
+        '
+        'ComboBox2
+        '
+        Me.ComboBox2.FormattingEnabled = True
+        Me.ComboBox2.Location = New System.Drawing.Point(62, 372)
+        Me.ComboBox2.Name = "ComboBox2"
+        Me.ComboBox2.Size = New System.Drawing.Size(151, 21)
+        Me.ComboBox2.TabIndex = 61
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.Location = New System.Drawing.Point(62, 356)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(77, 13)
+        Me.Label24.TabIndex = 60
+        Me.Label24.Text = "Related Table:"
+        '
+        'ComboBox1
+        '
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Location = New System.Drawing.Point(62, 332)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(151, 21)
+        Me.ComboBox1.TabIndex = 58
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(62, 316)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(74, 13)
+        Me.Label23.TabIndex = 57
+        Me.Label23.Text = "Column name:"
+        '
+        'Button4
+        '
+        Me.Button4.Location = New System.Drawing.Point(6, 411)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(50, 22)
+        Me.Button4.TabIndex = 17
+        Me.Button4.Text = "Delete"
+        Me.Button4.UseVisualStyleBackColor = True
+        '
+        'Button3
+        '
+        Me.Button3.Location = New System.Drawing.Point(6, 383)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(50, 22)
+        Me.Button3.TabIndex = 16
+        Me.Button3.Text = "Down"
+        Me.Button3.UseVisualStyleBackColor = True
+        '
+        'Button2
+        '
+        Me.Button2.Location = New System.Drawing.Point(6, 355)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(50, 22)
+        Me.Button2.TabIndex = 15
+        Me.Button2.Text = "Up"
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(6, 327)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(50, 22)
+        Me.Button1.TabIndex = 14
+        Me.Button1.Text = "Insert"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'Label22
+        '
+        Me.Label22.AutoSize = True
+        Me.Label22.Location = New System.Drawing.Point(6, 311)
+        Me.Label22.Name = "Label22"
+        Me.Label22.Size = New System.Drawing.Size(54, 13)
+        Me.Label22.TabIndex = 13
+        Me.Label22.Text = "Relations:"
+        '
+        'DataGridView3
+        '
+        Me.DataGridView3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView3.Location = New System.Drawing.Point(219, 311)
+        Me.DataGridView3.Name = "DataGridView3"
+        Me.DataGridView3.Size = New System.Drawing.Size(479, 122)
+        Me.DataGridView3.TabIndex = 12
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Location = New System.Drawing.Point(6, 55)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(50, 13)
+        Me.Label21.TabIndex = 11
+        Me.Label21.Text = "Columns:"
+        '
+        'btnDelete
+        '
+        Me.btnDelete.Location = New System.Drawing.Point(6, 155)
+        Me.btnDelete.Name = "btnDelete"
+        Me.btnDelete.Size = New System.Drawing.Size(50, 22)
+        Me.btnDelete.TabIndex = 10
+        Me.btnDelete.Text = "Delete"
+        Me.btnDelete.UseVisualStyleBackColor = True
+        '
+        'btnMoveDown
+        '
+        Me.btnMoveDown.Location = New System.Drawing.Point(6, 127)
+        Me.btnMoveDown.Name = "btnMoveDown"
+        Me.btnMoveDown.Size = New System.Drawing.Size(50, 22)
+        Me.btnMoveDown.TabIndex = 9
+        Me.btnMoveDown.Text = "Down"
+        Me.btnMoveDown.UseVisualStyleBackColor = True
+        '
+        'btnMoveUp
+        '
+        Me.btnMoveUp.Location = New System.Drawing.Point(6, 99)
+        Me.btnMoveUp.Name = "btnMoveUp"
+        Me.btnMoveUp.Size = New System.Drawing.Size(50, 22)
+        Me.btnMoveUp.TabIndex = 8
+        Me.btnMoveUp.Text = "Up"
+        Me.btnMoveUp.UseVisualStyleBackColor = True
+        '
+        'btnInsert
+        '
+        Me.btnInsert.Location = New System.Drawing.Point(6, 71)
+        Me.btnInsert.Name = "btnInsert"
+        Me.btnInsert.Size = New System.Drawing.Size(50, 22)
+        Me.btnInsert.TabIndex = 7
+        Me.btnInsert.Text = "Insert"
+        Me.btnInsert.UseVisualStyleBackColor = True
         '
         'DataGridView1
         '
@@ -140,9 +336,9 @@ Partial Class frmSqlCommand
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Location = New System.Drawing.Point(6, 32)
+        Me.DataGridView1.Location = New System.Drawing.Point(62, 55)
         Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(797, 401)
+        Me.DataGridView1.Size = New System.Drawing.Size(636, 250)
         Me.DataGridView1.TabIndex = 3
         '
         'txtTableName
@@ -151,13 +347,13 @@ Partial Class frmSqlCommand
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtTableName.Location = New System.Drawing.Point(78, 6)
         Me.txtTableName.Name = "txtTableName"
-        Me.txtTableName.Size = New System.Drawing.Size(725, 20)
+        Me.txtTableName.Size = New System.Drawing.Size(620, 20)
         Me.txtTableName.TabIndex = 2
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(6, 3)
+        Me.Label1.Location = New System.Drawing.Point(6, 9)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(66, 13)
         Me.Label1.TabIndex = 1
@@ -225,7 +421,7 @@ Partial Class frmSqlCommand
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(877, 439)
+        Me.TabPage2.Size = New System.Drawing.Size(704, 439)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Alter Table"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -735,7 +931,7 @@ Partial Class frmSqlCommand
         Me.GroupBox1.Controls.Add(Me.btnApplyCommand)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 511)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(817, 162)
+        Me.GroupBox1.Size = New System.Drawing.Size(712, 167)
         Me.GroupBox1.TabIndex = 11
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "SQL Command"
@@ -758,7 +954,7 @@ Partial Class frmSqlCommand
         Me.txtCommand.Multiline = True
         Me.txtCommand.Name = "txtCommand"
         Me.txtCommand.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtCommand.Size = New System.Drawing.Size(805, 109)
+        Me.txtCommand.Size = New System.Drawing.Size(700, 114)
         Me.txtCommand.TabIndex = 17
         '
         'btnClearCommand
@@ -779,11 +975,63 @@ Partial Class frmSqlCommand
         Me.btnApplyCommand.Text = "Apply"
         Me.btnApplyCommand.UseVisualStyleBackColor = True
         '
+        'btnReadTableDefFile
+        '
+        Me.btnReadTableDefFile.Location = New System.Drawing.Point(12, 12)
+        Me.btnReadTableDefFile.Name = "btnReadTableDefFile"
+        Me.btnReadTableDefFile.Size = New System.Drawing.Size(155, 22)
+        Me.btnReadTableDefFile.TabIndex = 17
+        Me.btnReadTableDefFile.Text = "Read Table Definition File"
+        Me.btnReadTableDefFile.UseVisualStyleBackColor = True
+        '
+        'txtTableDefFile
+        '
+        Me.txtTableDefFile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtTableDefFile.Location = New System.Drawing.Point(173, 14)
+        Me.txtTableDefFile.Name = "txtTableDefFile"
+        Me.txtTableDefFile.Size = New System.Drawing.Size(481, 20)
+        Me.txtTableDefFile.TabIndex = 23
+        '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Location = New System.Drawing.Point(6, 32)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(56, 13)
+        Me.Label26.TabIndex = 64
+        Me.Label26.Text = "Database:"
+        '
+        'txtDatabase
+        '
+        Me.txtDatabase.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtDatabase.Location = New System.Drawing.Point(78, 29)
+        Me.txtDatabase.Name = "txtDatabase"
+        Me.txtDatabase.ReadOnly = True
+        Me.txtDatabase.Size = New System.Drawing.Size(620, 20)
+        Me.txtDatabase.TabIndex = 65
+        '
+        'btnSave
+        '
+        Me.btnSave.Location = New System.Drawing.Point(6, 283)
+        Me.btnSave.Name = "btnSave"
+        Me.btnSave.Size = New System.Drawing.Size(50, 22)
+        Me.btnSave.TabIndex = 66
+        Me.btnSave.Text = "Save"
+        Me.btnSave.UseVisualStyleBackColor = True
+        '
         'frmSqlCommand
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(841, 685)
+        Me.ClientSize = New System.Drawing.Size(736, 690)
+        Me.Controls.Add(Me.txtTableDefFile)
+        Me.Controls.Add(Me.btnReadTableDefFile)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.btnExit)
@@ -792,6 +1040,7 @@ Partial Class frmSqlCommand
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
+        CType(Me.DataGridView3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
@@ -799,6 +1048,7 @@ Partial Class frmSqlCommand
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
@@ -871,4 +1121,27 @@ Partial Class frmSqlCommand
     Friend WithEvents txtCommand As TextBox
     Friend WithEvents btnClearCommand As Button
     Friend WithEvents btnApplyCommand As Button
+    Friend WithEvents btnReadTableDefFile As Button
+    Friend WithEvents txtTableDefFile As TextBox
+    Friend WithEvents OpenFileDialog1 As OpenFileDialog
+    Friend WithEvents btnMoveDown As Button
+    Friend WithEvents btnMoveUp As Button
+    Friend WithEvents btnInsert As Button
+    Friend WithEvents btnDelete As Button
+    Friend WithEvents ComboBox3 As ComboBox
+    Friend WithEvents Label25 As Label
+    Friend WithEvents ComboBox2 As ComboBox
+    Friend WithEvents Label24 As Label
+    Friend WithEvents ComboBox1 As ComboBox
+    Friend WithEvents Label23 As Label
+    Friend WithEvents Button4 As Button
+    Friend WithEvents Button3 As Button
+    Friend WithEvents Button2 As Button
+    Friend WithEvents Button1 As Button
+    Friend WithEvents Label22 As Label
+    Friend WithEvents DataGridView3 As DataGridView
+    Friend WithEvents Label21 As Label
+    Friend WithEvents txtDatabase As TextBox
+    Friend WithEvents Label26 As Label
+    Friend WithEvents btnSave As Button
 End Class

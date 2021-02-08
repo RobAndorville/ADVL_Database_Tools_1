@@ -25,6 +25,11 @@ Partial Class frmModifyDatabase
         Me.btnExit = New System.Windows.Forms.Button()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.btnDeleteRow = New System.Windows.Forms.Button()
+        Me.btnInsertBelow = New System.Windows.Forms.Button()
+        Me.btnInsertAbove = New System.Windows.Forms.Button()
+        Me.btnMoveDown = New System.Windows.Forms.Button()
+        Me.btnMoveUp = New System.Windows.Forms.Button()
         Me.btnFindTableDef = New System.Windows.Forms.Button()
         Me.txtTableDefFileName = New System.Windows.Forms.TextBox()
         Me.Label23 = New System.Windows.Forms.Label()
@@ -97,11 +102,6 @@ Partial Class frmModifyDatabase
         Me.cmbUtilitiesSelectTable = New System.Windows.Forms.ComboBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
-        Me.btnMoveUp = New System.Windows.Forms.Button()
-        Me.btnMoveDown = New System.Windows.Forms.Button()
-        Me.btnInsertAbove = New System.Windows.Forms.Button()
-        Me.btnInsertBelow = New System.Windows.Forms.Button()
-        Me.btnDeleteRow = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -161,6 +161,51 @@ Partial Class frmModifyDatabase
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Create New Table"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'btnDeleteRow
+        '
+        Me.btnDeleteRow.Location = New System.Drawing.Point(337, 33)
+        Me.btnDeleteRow.Name = "btnDeleteRow"
+        Me.btnDeleteRow.Size = New System.Drawing.Size(80, 22)
+        Me.btnDeleteRow.TabIndex = 17
+        Me.btnDeleteRow.Text = "Delete Row"
+        Me.btnDeleteRow.UseVisualStyleBackColor = True
+        '
+        'btnInsertBelow
+        '
+        Me.btnInsertBelow.Location = New System.Drawing.Point(251, 33)
+        Me.btnInsertBelow.Name = "btnInsertBelow"
+        Me.btnInsertBelow.Size = New System.Drawing.Size(80, 22)
+        Me.btnInsertBelow.TabIndex = 16
+        Me.btnInsertBelow.Text = "Insert Below"
+        Me.btnInsertBelow.UseVisualStyleBackColor = True
+        '
+        'btnInsertAbove
+        '
+        Me.btnInsertAbove.Location = New System.Drawing.Point(165, 33)
+        Me.btnInsertAbove.Name = "btnInsertAbove"
+        Me.btnInsertAbove.Size = New System.Drawing.Size(80, 22)
+        Me.btnInsertAbove.TabIndex = 15
+        Me.btnInsertAbove.Text = "Insert Above"
+        Me.btnInsertAbove.UseVisualStyleBackColor = True
+        '
+        'btnMoveDown
+        '
+        Me.btnMoveDown.Location = New System.Drawing.Point(79, 33)
+        Me.btnMoveDown.Name = "btnMoveDown"
+        Me.btnMoveDown.Size = New System.Drawing.Size(80, 22)
+        Me.btnMoveDown.TabIndex = 14
+        Me.btnMoveDown.Text = "Move Down"
+        Me.btnMoveDown.UseVisualStyleBackColor = True
+        '
+        'btnMoveUp
+        '
+        Me.btnMoveUp.Location = New System.Drawing.Point(9, 33)
+        Me.btnMoveUp.Name = "btnMoveUp"
+        Me.btnMoveUp.Size = New System.Drawing.Size(64, 22)
+        Me.btnMoveUp.TabIndex = 13
+        Me.btnMoveUp.Text = "Move Up"
+        Me.btnMoveUp.UseVisualStyleBackColor = True
         '
         'btnFindTableDef
         '
@@ -245,7 +290,7 @@ Partial Class frmModifyDatabase
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1091, 553)
+        Me.TabPage2.Size = New System.Drawing.Size(979, 553)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Relationships"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -388,7 +433,7 @@ Partial Class frmModifyDatabase
         Me.TabPage5.Controls.Add(Me.Label11)
         Me.TabPage5.Location = New System.Drawing.Point(4, 22)
         Me.TabPage5.Name = "TabPage5"
-        Me.TabPage5.Size = New System.Drawing.Size(1091, 553)
+        Me.TabPage5.Size = New System.Drawing.Size(979, 553)
         Me.TabPage5.TabIndex = 4
         Me.TabPage5.Text = "Indexes"
         Me.TabPage5.UseVisualStyleBackColor = True
@@ -510,7 +555,7 @@ Partial Class frmModifyDatabase
         Me.TabPage3.Controls.Add(Me.DataGridView3)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Size = New System.Drawing.Size(1091, 553)
+        Me.TabPage3.Size = New System.Drawing.Size(979, 553)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Column Descriptions"
         Me.TabPage3.UseVisualStyleBackColor = True
@@ -586,7 +631,7 @@ Partial Class frmModifyDatabase
         Me.TabPage4.Controls.Add(Me.Label3)
         Me.TabPage4.Location = New System.Drawing.Point(4, 22)
         Me.TabPage4.Name = "TabPage4"
-        Me.TabPage4.Size = New System.Drawing.Size(1091, 553)
+        Me.TabPage4.Size = New System.Drawing.Size(979, 553)
         Me.TabPage4.TabIndex = 3
         Me.TabPage4.Text = "Miscellaneous"
         Me.TabPage4.UseVisualStyleBackColor = True
@@ -844,51 +889,6 @@ Partial Class frmModifyDatabase
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
-        '
-        'btnMoveUp
-        '
-        Me.btnMoveUp.Location = New System.Drawing.Point(9, 33)
-        Me.btnMoveUp.Name = "btnMoveUp"
-        Me.btnMoveUp.Size = New System.Drawing.Size(64, 22)
-        Me.btnMoveUp.TabIndex = 13
-        Me.btnMoveUp.Text = "Move Up"
-        Me.btnMoveUp.UseVisualStyleBackColor = True
-        '
-        'btnMoveDown
-        '
-        Me.btnMoveDown.Location = New System.Drawing.Point(79, 33)
-        Me.btnMoveDown.Name = "btnMoveDown"
-        Me.btnMoveDown.Size = New System.Drawing.Size(80, 22)
-        Me.btnMoveDown.TabIndex = 14
-        Me.btnMoveDown.Text = "Move Down"
-        Me.btnMoveDown.UseVisualStyleBackColor = True
-        '
-        'btnInsertAbove
-        '
-        Me.btnInsertAbove.Location = New System.Drawing.Point(165, 33)
-        Me.btnInsertAbove.Name = "btnInsertAbove"
-        Me.btnInsertAbove.Size = New System.Drawing.Size(80, 22)
-        Me.btnInsertAbove.TabIndex = 15
-        Me.btnInsertAbove.Text = "Insert Above"
-        Me.btnInsertAbove.UseVisualStyleBackColor = True
-        '
-        'btnInsertBelow
-        '
-        Me.btnInsertBelow.Location = New System.Drawing.Point(251, 33)
-        Me.btnInsertBelow.Name = "btnInsertBelow"
-        Me.btnInsertBelow.Size = New System.Drawing.Size(80, 22)
-        Me.btnInsertBelow.TabIndex = 16
-        Me.btnInsertBelow.Text = "Insert Below"
-        Me.btnInsertBelow.UseVisualStyleBackColor = True
-        '
-        'btnDeleteRow
-        '
-        Me.btnDeleteRow.Location = New System.Drawing.Point(337, 33)
-        Me.btnDeleteRow.Name = "btnDeleteRow"
-        Me.btnDeleteRow.Size = New System.Drawing.Size(80, 22)
-        Me.btnDeleteRow.TabIndex = 17
-        Me.btnDeleteRow.Text = "Delete Row"
-        Me.btnDeleteRow.UseVisualStyleBackColor = True
         '
         'frmModifyDatabase
         '

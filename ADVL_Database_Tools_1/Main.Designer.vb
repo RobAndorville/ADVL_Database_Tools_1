@@ -32,6 +32,7 @@ Partial Class Main
         Me.TabPage5 = New System.Windows.Forms.TabPage()
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.btnGetAccessVersion = New System.Windows.Forms.Button()
         Me.btnUpdateTables = New System.Windows.Forms.Button()
         Me.cmbDatabaseType = New System.Windows.Forms.ComboBox()
         Me.Label13 = New System.Windows.Forms.Label()
@@ -69,7 +70,7 @@ Partial Class Main
         Me.Label21 = New System.Windows.Forms.Label()
         Me.txtProjectPath = New System.Windows.Forms.TextBox()
         Me.Label8 = New System.Windows.Forms.Label()
-        Me.txtAppNetName = New System.Windows.Forms.TextBox()
+        Me.txtProNetName = New System.Windows.Forms.TextBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.btnOpenSystem = New System.Windows.Forms.Button()
         Me.btnOpenData = New System.Windows.Forms.Button()
@@ -104,13 +105,14 @@ Partial Class Main
         Me.txtProjectName = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.btnProject = New System.Windows.Forms.Button()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.btnAndorville = New System.Windows.Forms.Button()
         Me.btnWebPages = New System.Windows.Forms.Button()
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ToolStripMenuItem1_EditWorkflowTabPage = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripMenuItem1_ShowStartPageInWorkflowTab = New System.Windows.Forms.ToolStripMenuItem()
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
         Me.TabControl1.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -119,6 +121,7 @@ Partial Class Main
         Me.TabPage4.SuspendLayout()
         CType(Me.DataGridView2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage1.SuspendLayout()
+        Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'btnExit
@@ -176,7 +179,7 @@ Partial Class Main
         Me.TabControl1.Location = New System.Drawing.Point(12, 40)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(717, 449)
+        Me.TabControl1.Size = New System.Drawing.Size(717, 499)
         Me.TabControl1.TabIndex = 49
         '
         'TabPage5
@@ -184,7 +187,7 @@ Partial Class Main
         Me.TabPage5.Controls.Add(Me.WebBrowser1)
         Me.TabPage5.Location = New System.Drawing.Point(4, 22)
         Me.TabPage5.Name = "TabPage5"
-        Me.TabPage5.Size = New System.Drawing.Size(709, 423)
+        Me.TabPage5.Size = New System.Drawing.Size(709, 473)
         Me.TabPage5.TabIndex = 4
         Me.TabPage5.Text = "Workflow"
         Me.TabPage5.UseVisualStyleBackColor = True
@@ -202,6 +205,7 @@ Partial Class Main
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.btnGetAccessVersion)
         Me.TabPage2.Controls.Add(Me.btnUpdateTables)
         Me.TabPage2.Controls.Add(Me.cmbDatabaseType)
         Me.TabPage2.Controls.Add(Me.Label13)
@@ -219,14 +223,23 @@ Partial Class Main
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(709, 423)
+        Me.TabPage2.Size = New System.Drawing.Size(709, 473)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Database"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
+        'btnGetAccessVersion
+        '
+        Me.btnGetAccessVersion.Location = New System.Drawing.Point(9, 34)
+        Me.btnGetAccessVersion.Name = "btnGetAccessVersion"
+        Me.btnGetAccessVersion.Size = New System.Drawing.Size(134, 22)
+        Me.btnGetAccessVersion.TabIndex = 52
+        Me.btnGetAccessVersion.Text = "Get Access Version"
+        Me.btnGetAccessVersion.UseVisualStyleBackColor = True
+        '
         'btnUpdateTables
         '
-        Me.btnUpdateTables.Location = New System.Drawing.Point(6, 101)
+        Me.btnUpdateTables.Location = New System.Drawing.Point(9, 132)
         Me.btnUpdateTables.Name = "btnUpdateTables"
         Me.btnUpdateTables.Size = New System.Drawing.Size(53, 22)
         Me.btnUpdateTables.TabIndex = 51
@@ -253,7 +266,7 @@ Partial Class Main
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(6, 238)
+        Me.Label12.Location = New System.Drawing.Point(6, 277)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(37, 13)
         Me.Label12.TabIndex = 24
@@ -265,15 +278,15 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lstFields.FormattingEnabled = True
-        Me.lstFields.Location = New System.Drawing.Point(68, 238)
+        Me.lstFields.Location = New System.Drawing.Point(68, 277)
         Me.lstFields.Name = "lstFields"
-        Me.lstFields.Size = New System.Drawing.Size(622, 160)
+        Me.lstFields.Size = New System.Drawing.Size(622, 173)
         Me.lstFields.TabIndex = 23
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(6, 85)
+        Me.Label2.Location = New System.Drawing.Point(6, 116)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(42, 13)
         Me.Label2.TabIndex = 22
@@ -284,14 +297,14 @@ Partial Class Main
         Me.lstTables.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lstTables.FormattingEnabled = True
-        Me.lstTables.Location = New System.Drawing.Point(68, 85)
+        Me.lstTables.Location = New System.Drawing.Point(68, 116)
         Me.lstTables.Name = "lstTables"
         Me.lstTables.Size = New System.Drawing.Size(622, 147)
         Me.lstTables.TabIndex = 21
         '
         'btnDatabase
         '
-        Me.btnDatabase.Location = New System.Drawing.Point(6, 53)
+        Me.btnDatabase.Location = New System.Drawing.Point(9, 81)
         Me.btnDatabase.Name = "btnDatabase"
         Me.btnDatabase.Size = New System.Drawing.Size(53, 22)
         Me.btnDatabase.TabIndex = 20
@@ -302,7 +315,7 @@ Partial Class Main
         '
         Me.txtDatabase.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtDatabase.Location = New System.Drawing.Point(68, 34)
+        Me.txtDatabase.Location = New System.Drawing.Point(68, 65)
         Me.txtDatabase.Multiline = True
         Me.txtDatabase.Name = "txtDatabase"
         Me.txtDatabase.Size = New System.Drawing.Size(622, 45)
@@ -311,7 +324,7 @@ Partial Class Main
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(6, 37)
+        Me.Label1.Location = New System.Drawing.Point(6, 65)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(56, 13)
         Me.Label1.TabIndex = 18
@@ -369,7 +382,7 @@ Partial Class Main
         Me.TabPage3.Controls.Add(Me.btnSaveChanges)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Size = New System.Drawing.Size(709, 423)
+        Me.TabPage3.Size = New System.Drawing.Size(709, 473)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Table"
         Me.TabPage3.UseVisualStyleBackColor = True
@@ -493,7 +506,7 @@ Partial Class Main
         Me.TabPage4.Controls.Add(Me.btnViewSchema)
         Me.TabPage4.Location = New System.Drawing.Point(4, 22)
         Me.TabPage4.Name = "TabPage4"
-        Me.TabPage4.Size = New System.Drawing.Size(709, 423)
+        Me.TabPage4.Size = New System.Drawing.Size(709, 473)
         Me.TabPage4.TabIndex = 3
         Me.TabPage4.Text = "Schema"
         Me.TabPage4.UseVisualStyleBackColor = True
@@ -533,7 +546,7 @@ Partial Class Main
         Me.TabPage1.Controls.Add(Me.Label21)
         Me.TabPage1.Controls.Add(Me.txtProjectPath)
         Me.TabPage1.Controls.Add(Me.Label8)
-        Me.TabPage1.Controls.Add(Me.txtAppNetName)
+        Me.TabPage1.Controls.Add(Me.txtProNetName)
         Me.TabPage1.Controls.Add(Me.Label6)
         Me.TabPage1.Controls.Add(Me.btnOpenSystem)
         Me.TabPage1.Controls.Add(Me.btnOpenData)
@@ -571,7 +584,7 @@ Partial Class Main
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(709, 423)
+        Me.TabPage1.Size = New System.Drawing.Size(709, 473)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Project Information"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -619,18 +632,18 @@ Partial Class Main
         Me.Label8.AutoSize = True
         Me.Label8.Location = New System.Drawing.Point(166, 39)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(103, 13)
+        Me.Label8.Size = New System.Drawing.Size(84, 13)
         Me.Label8.TabIndex = 301
-        Me.Label8.Text = "Application network:"
+        Me.Label8.Text = "Project network:"
         '
-        'txtAppNetName
+        'txtProNetName
         '
-        Me.txtAppNetName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.txtProNetName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtAppNetName.Location = New System.Drawing.Point(275, 34)
-        Me.txtAppNetName.Name = "txtAppNetName"
-        Me.txtAppNetName.Size = New System.Drawing.Size(428, 20)
-        Me.txtAppNetName.TabIndex = 300
+        Me.txtProNetName.Location = New System.Drawing.Point(275, 34)
+        Me.txtProNetName.Name = "txtProNetName"
+        Me.txtProNetName.Size = New System.Drawing.Size(428, 20)
+        Me.txtProNetName.TabIndex = 300
         '
         'Label6
         '
@@ -927,9 +940,6 @@ Partial Class Main
         Me.btnProject.Text = "Project List"
         Me.btnProject.UseVisualStyleBackColor = True
         '
-        'Timer1
-        '
-        '
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
@@ -948,12 +958,31 @@ Partial Class Main
         'btnWebPages
         '
         Me.btnWebPages.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnWebPages.ContextMenuStrip = Me.ContextMenuStrip1
         Me.btnWebPages.Location = New System.Drawing.Point(350, 12)
         Me.btnWebPages.Name = "btnWebPages"
         Me.btnWebPages.Size = New System.Drawing.Size(68, 22)
         Me.btnWebPages.TabIndex = 280
         Me.btnWebPages.Text = "Workflows"
         Me.btnWebPages.UseVisualStyleBackColor = True
+        '
+        'ContextMenuStrip1
+        '
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1_EditWorkflowTabPage, Me.ToolStripMenuItem1_ShowStartPageInWorkflowTab})
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(248, 48)
+        '
+        'ToolStripMenuItem1_EditWorkflowTabPage
+        '
+        Me.ToolStripMenuItem1_EditWorkflowTabPage.Name = "ToolStripMenuItem1_EditWorkflowTabPage"
+        Me.ToolStripMenuItem1_EditWorkflowTabPage.Size = New System.Drawing.Size(247, 22)
+        Me.ToolStripMenuItem1_EditWorkflowTabPage.Text = "Edit Workflow Tab Page"
+        '
+        'ToolStripMenuItem1_ShowStartPageInWorkflowTab
+        '
+        Me.ToolStripMenuItem1_ShowStartPageInWorkflowTab.Name = "ToolStripMenuItem1_ShowStartPageInWorkflowTab"
+        Me.ToolStripMenuItem1_ShowStartPageInWorkflowTab.Size = New System.Drawing.Size(247, 22)
+        Me.ToolStripMenuItem1_ShowStartPageInWorkflowTab.Text = "Show Start Page In Workflow Tab"
         '
         'Timer2
         '
@@ -962,7 +991,7 @@ Partial Class Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(741, 501)
+        Me.ClientSize = New System.Drawing.Size(741, 551)
         Me.Controls.Add(Me.btnWebPages)
         Me.Controls.Add(Me.btnAndorville)
         Me.Controls.Add(Me.TabControl1)
@@ -984,6 +1013,7 @@ Partial Class Main
         CType(Me.DataGridView2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
+        Me.ContextMenuStrip1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -1011,7 +1041,6 @@ Partial Class Main
     Friend WithEvents Label3 As Label
     Friend WithEvents btnProject As Button
     Friend WithEvents TabPage2 As TabPage
-    Friend WithEvents Timer1 As Timer
     Friend WithEvents btnAndorville As Button
     Friend WithEvents cmbDatabaseType As ComboBox
     Friend WithEvents Label13 As Label
@@ -1071,8 +1100,11 @@ Partial Class Main
     Friend WithEvents Label21 As Label
     Friend WithEvents txtProjectPath As TextBox
     Friend WithEvents Label8 As Label
-    Friend WithEvents txtAppNetName As TextBox
+    Friend WithEvents txtProNetName As TextBox
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents chkConnect As CheckBox
-    Friend WithEvents Timer3 As Timer
+    Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
+    Friend WithEvents ToolStripMenuItem1_EditWorkflowTabPage As ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem1_ShowStartPageInWorkflowTab As ToolStripMenuItem
+    Friend WithEvents btnGetAccessVersion As Button
 End Class

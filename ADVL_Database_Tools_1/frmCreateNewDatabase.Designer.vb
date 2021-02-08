@@ -41,6 +41,8 @@ Partial Class frmCreateNewDatabase
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.rbAccess = New System.Windows.Forms.RadioButton()
+        Me.rbSQLite = New System.Windows.Forms.RadioButton()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -217,11 +219,35 @@ Partial Class frmCreateNewDatabase
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Information Stored in Definition File:"
         '
+        'rbAccess
+        '
+        Me.rbAccess.AutoSize = True
+        Me.rbAccess.Location = New System.Drawing.Point(145, 15)
+        Me.rbAccess.Name = "rbAccess"
+        Me.rbAccess.Size = New System.Drawing.Size(60, 17)
+        Me.rbAccess.TabIndex = 78
+        Me.rbAccess.TabStop = True
+        Me.rbAccess.Text = "Access"
+        Me.rbAccess.UseVisualStyleBackColor = True
+        '
+        'rbSQLite
+        '
+        Me.rbSQLite.AutoSize = True
+        Me.rbSQLite.Location = New System.Drawing.Point(211, 15)
+        Me.rbSQLite.Name = "rbSQLite"
+        Me.rbSQLite.Size = New System.Drawing.Size(57, 17)
+        Me.rbSQLite.TabIndex = 79
+        Me.rbSQLite.TabStop = True
+        Me.rbSQLite.Text = "SQLite"
+        Me.rbSQLite.UseVisualStyleBackColor = True
+        '
         'frmCreateNewDatabase
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(647, 356)
+        Me.Controls.Add(Me.rbSQLite)
+        Me.Controls.Add(Me.rbAccess)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.btnSelect)
         Me.Controls.Add(Me.btnFind)
@@ -261,4 +287,6 @@ Partial Class frmCreateNewDatabase
     Friend WithEvents FolderBrowserDialog1 As FolderBrowserDialog
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents rbAccess As RadioButton
+    Friend WithEvents rbSQLite As RadioButton
 End Class

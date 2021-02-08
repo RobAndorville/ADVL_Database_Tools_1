@@ -3,6 +3,10 @@
 
 #Region " Variable Declarations - All the variables used in this form and this application." '-------------------------------------------------------------------------------------------------
 
+    Dim tableDefFileName As String 'The Database deinition file name.
+    Public tableDefXDoc As System.Xml.Linq.XDocument 'The database definition XDocument.
+    Dim WithEvents Zip As ADVL_Utilities_Library_1.ZipComp
+
 #End Region 'Variable Declarations ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #Region " Properties - All the properties used in this form and this application" '------------------------------------------------------------------------------------------------------------
@@ -69,6 +73,40 @@
 
             'Add code to read other saved setting here:
 
+            CheckFormPos()
+        End If
+    End Sub
+
+    Private Sub CheckFormPos()
+        'Check that the form can be seen on a screen.
+
+        Dim MinWidthVisible As Integer = 192 'Minimum number of X pixels visible. The form will be moved if this many form pixels are not visible.
+        Dim MinHeightVisible As Integer = 64 'Minimum number of Y pixels visible. The form will be moved if this many form pixels are not visible.
+
+        Dim FormRect As New Rectangle(Me.Left, Me.Top, Me.Width, Me.Height)
+        Dim WARect As Rectangle = Screen.GetWorkingArea(FormRect) 'The Working Area rectangle - the usable area of the screen containing the form.
+
+        ''Check if the top of the form is less than zero:
+        'If Me.Top < 0 Then Me.Top = 0
+
+        'Check if the top of the form is above the top of the Working Area:
+        If Me.Top < WARect.Top Then
+            Me.Top = WARect.Top
+        End If
+
+        'Check if the top of the form is too close to the bottom of the Working Area:
+        If (Me.Top + MinHeightVisible) > (WARect.Top + WARect.Height) Then
+            Me.Top = WARect.Top + WARect.Height - MinHeightVisible
+        End If
+
+        'Check if the left edge of the form is too close to the right edge of the Working Area:
+        If (Me.Left + MinWidthVisible) > (WARect.Left + WARect.Width) Then
+            Me.Left = WARect.Left + WARect.Width - MinWidthVisible
+        End If
+
+        'Check if the right edge of the form is too close to the left edge of the Working Area:
+        If (Me.Left + Me.Width - MinWidthVisible) < WARect.Left Then
+            Me.Left = WARect.Left - Me.Width + MinWidthVisible
         End If
     End Sub
 
@@ -160,7 +198,27 @@
         ComboBoxCol7.Items.Add("")
         ComboBoxCol7.Items.Add("Primary Key")
 
+        Dim TextBoxCol8 As New DataGridViewTextBoxColumn
+        DataGridView1.Columns.Add(TextBoxCol8)
+        DataGridView1.Columns(8).HeaderText = "Description"
+        DataGridView1.Columns(8).Width = 160
+
+        DataGridView1.AllowUserToAddRows = False 'This removes the last edit row from the DataGridView.
+
         FillCmbSelectTable()
+
+        'Set up Relations grid:
+        Dim TextBoxRelCol0 As New DataGridViewTextBoxColumn
+        DataGridView3.Columns.Add(TextBoxRelCol0)
+        DataGridView3.Columns(0).HeaderText = "Column Name"
+        Dim TextBoxRelCol1 As New DataGridViewTextBoxColumn
+        DataGridView3.Columns.Add(TextBoxRelCol1)
+        DataGridView3.Columns(1).HeaderText = "Related Table"
+        Dim TextBoxRelCol2 As New DataGridViewTextBoxColumn
+        DataGridView3.Columns.Add(TextBoxRelCol2)
+        DataGridView3.Columns(2).HeaderText = "Primary Key"
+
+        DataGridView3.AllowUserToAddRows = False 'This removes the last edit row from the DataGridView.
 
         cmbAddColumnType.Items.Add("Short (Integer)")
         cmbAddColumnType.Items.Add("Long (Integer)")
@@ -476,7 +534,7 @@
         End If
     End Sub
 
-    Private Sub GenerateCreateTableCommand()
+    Public Sub GenerateCreateTableCommand()
         'Generate the Create Table command:
 
         If Trim(txtTableName.Text) = "" Then
@@ -487,7 +545,8 @@
         End If
 
         Dim NPrimaryKeys As Integer = 0 'The number of primary key columns
-        Dim LastRow As Integer = DataGridView1.RowCount - 1
+        'Dim LastRow As Integer = DataGridView1.RowCount - 1
+        Dim LastRow As Integer = DataGridView1.RowCount
         Dim I As Integer
 
         'Count the number of primary keys:
@@ -499,7 +558,8 @@
 
         Dim bldCmd As New System.Text.StringBuilder
         bldCmd.Clear()
-        bldCmd.Append("CREATE TABLE " & Trim(txtTableName.Text) & vbCrLf)
+        'bldCmd.Append("CREATE TABLE " & Trim(txtTableName.Text) & vbCrLf)
+        bldCmd.Append("CREATE TABLE " & "[" & Trim(txtTableName.Text) & "]" & vbCrLf) 'Table name may contain spaces so enclose in square brackets.
         Dim DataTypeString As String
 
         If NPrimaryKeys > 1 Then
@@ -628,6 +688,8 @@
                 Dim Scale As Integer
                 Scale = DataGridView1.Rows(RowNo).Cells(4).Value
                 DataTypeString = "DECIMAL (" & Precision & "," & Scale & ")"
+            Case Else
+                Main.Message.AddWarning("Unknown data type: " & DataType & vbCrLf)
         End Select
     End Sub
 
@@ -645,11 +707,13 @@
         End If
 
         If rbDropTable.Checked = True Then
-            bldCmd.Append("DROP TABLE " & Trim(cmbSelectTable.Text & ";") & vbCrLf)
+            'bldCmd.Append("DROP TABLE " & Trim(cmbSelectTable.Text & ";") & vbCrLf)
+            bldCmd.Append("DROP TABLE " & "[" & Trim(cmbSelectTable.Text) & "]" & ";" & vbCrLf)
 
         ElseIf rbAddColumn.Checked = True Then
             Main.Message.Add("Add column selected." & vbCrLf)
-            bldCmd.Append("ALTER TABLE " & Trim(cmbSelectTable.Text) & vbCrLf)
+            'bldCmd.Append("ALTER TABLE " & Trim(cmbSelectTable.Text) & vbCrLf)
+            bldCmd.Append("ALTER TABLE " & "[" & Trim(cmbSelectTable.Text) & "]" & vbCrLf)
             bldCmd.Append("    ADD COLUMN [" & Trim(txtAddColumnName.Text) & "]") 'Add the column name
 
             Select Case cmbAddColumnType.Text
@@ -705,7 +769,8 @@
 
 
         ElseIf rbAlterColumn.Checked = True Then
-            bldCmd.Append("ALTER TABLE " & Trim(cmbSelectTable.Text) & vbCrLf)
+            'bldCmd.Append("ALTER TABLE " & Trim(cmbSelectTable.Text) & vbCrLf)
+            bldCmd.Append("ALTER TABLE " & "[" & Trim(cmbSelectTable.Text) & "]" & vbCrLf)
             bldCmd.Append("    ALTER COLUMN " & Trim(cmbAlterColumnName.Text)) 'Add the column name
 
             'Add Null / Not Null:
@@ -726,7 +791,8 @@
             bldCmd.Append(");" & vbCrLf)
 
         ElseIf rbDropColumn.Checked = True Then
-            bldCmd.Append("ALTER TABLE " & Trim(cmbSelectTable.Text) & vbCrLf)
+            'bldCmd.Append("ALTER TABLE " & Trim(cmbSelectTable.Text) & vbCrLf)
+            bldCmd.Append("ALTER TABLE " & "[" & Trim(cmbSelectTable.Text) & "]" & vbCrLf)
             bldCmd.Append("    DROP COLUMN " & Trim(cmbDropColumnName.Text)) 'Add the column name
             bldCmd.Append(");" & vbCrLf)
 
@@ -739,7 +805,8 @@
 
             bldCmd.Append(txtIndexName.Text & vbCrLf) 'Add index name
 
-            bldCmd.Append("    ON " & cmbSelectTable.Text) 'Add table name
+            'bldCmd.Append("    ON " & cmbSelectTable.Text) 'Add table name
+            bldCmd.Append("    ON " & "[" & cmbSelectTable.Text & "]") 'Add table name
 
             'Add column name(s):
             Dim NCols As Integer
@@ -775,7 +842,8 @@
 
         ElseIf rbAddForeignKey.Checked = True Then
             'http://www.w3schools.com/sql/sql_foreignkey.asp
-            bldCmd.Append("ALTER TABLE " & Trim(cmbSelectTable.Text) & vbCrLf)
+            'bldCmd.Append("ALTER TABLE " & Trim(cmbSelectTable.Text) & vbCrLf)
+            bldCmd.Append("ALTER TABLE " & "[" & Trim(cmbSelectTable.Text) & "]" & vbCrLf)
             bldCmd.Append("    ADD FOREIGN KEY (" & cmbForeignKeyColumnName.Text & ")" & vbCrLf)
             bldCmd.Append("    REFERENCES " & cmbRelatedTable.Text & " (" & cmbPrimaryKey.Text & ");" & vbCrLf)
 
@@ -799,7 +867,7 @@
 
     End Sub
 
-    Private Sub FillCmbSelectTable()
+    Public Sub FillCmbSelectTable()
         'Fill the cmbSelectTable listbox with the availalble tables in the selected database.
 
         If Main.DatabasePath = "" Then
@@ -851,6 +919,9 @@
         'Apply the SQL Command:
         Main.SqlCommandText = txtCommand.Text 'Set the SqlCommandText property on the Database form.
         Main.ApplySqlCommand()
+        Main.FillLstTables()
+        Main.FillCmbSelectTable()
+        FillCmbSelectTable()
     End Sub
 
     Private Sub FillCmbFields()
@@ -886,7 +957,8 @@
             conn.Open()
 
             'Specify the commandString to query the database:
-            commandString = "SELECT Top 500 * FROM " + cmbSelectTable.SelectedItem.ToString
+            'commandString = "SELECT Top 500 * FROM " + cmbSelectTable.SelectedItem.ToString
+            commandString = "SELECT Top 500 * FROM " & "[" & cmbSelectTable.SelectedItem.ToString & "]"
             Dim dataAdapter As New System.Data.OleDb.OleDbDataAdapter(commandString, conn)
             ds = New DataSet
             dataAdapter.Fill(ds, "SelTable") 'ds was defined earlier as a DataSet
@@ -1352,6 +1424,556 @@
             End If
         Next
     End Sub
+
+    Private Sub btnReadTableDefFile_Click(sender As Object, e As EventArgs) Handles btnReadTableDefFile.Click
+        Select Case Main.Project.DataLocn.Type
+            Case ADVL_Utilities_Library_1.FileLocation.Types.Directory
+                OpenFileDialog1.InitialDirectory = Main.Project.DataLocn.Path
+                OpenFileDialog1.Filter = "Table Definition |*.TableDef"
+                If OpenFileDialog1.ShowDialog() = DialogResult.OK Then
+                    tableDefFileName = OpenFileDialog1.FileName
+                    'txtTableDefFile.Text = tableDefFileName
+                    txtTableDefFile.Text = System.IO.Path.GetFileName(tableDefFileName)
+                    tableDefXDoc = XDocument.Load(tableDefFileName)
+                    ReadTableDefXDoc()
+                End If
+            Case ADVL_Utilities_Library_1.FileLocation.Types.Archive
+                'Select a Database Definition file from the project archive:
+                'Show the zip archive file selection form:
+                Zip = New ADVL_Utilities_Library_1.ZipComp
+                Zip.ArchivePath = Main.Project.DataLocn.Path
+                Zip.SelectFile()
+                'Zip.SelectFileForm.ApplicationName = Main.Project.ApplicationName
+                Zip.SelectFileForm.ApplicationName = Main.Project.Application.Name
+                Zip.SelectFileForm.SettingsLocn = Main.Project.SettingsLocn
+                Zip.SelectFileForm.Show()
+                Zip.SelectFileForm.RestoreFormSettings()
+                Zip.SelectFileForm.FileExtension = ".TableDef"
+                Zip.SelectFileForm.GetFileList()
+                'Process file selection in the Zip.FileSelected event.
+        End Select
+
+    End Sub
+
+    Private Sub Zip_FileSelected(FileName As String) Handles Zip.FileSelected
+        tableDefFileName = FileName
+        txtTableDefFile.Text = tableDefFileName
+        Main.Project.DataLocn.ReadXmlData(FileName, tableDefXDoc)
+        ReadTableDefXDoc()
+    End Sub
+
+    Public Sub ReadTableDefXDoc()
+
+        DataGridView1.AllowUserToAddRows = False 'This removes the last edit row from the DataGridView.
+
+        DataGridView1.Rows.Clear()
+
+        Dim Database As String = tableDefXDoc.<TableDefinition>.<Summary>.<Database>.Value
+        txtDatabase.Text = Database
+        Dim TableName As String = tableDefXDoc.<TableDefinition>.<Summary>.<TableName>.Value
+        txtTableName.Text = Trim(TableName)
+        Dim NumberOfColumns As Integer = tableDefXDoc.<TableDefinition>.<Summary>.<NumberOfColumns>.Value
+        Dim NumberOfPrimaryKeys As Integer = tableDefXDoc.<TableDefinition>.<Summary>.<NumberOfPrimaryKeys>.Value
+        Dim PrimaryKeyColName As String
+        Dim I As Integer
+
+        Dim NRows As Integer = tableDefXDoc.<TableDefinition>.<Summary>.<NumberOfColumns>.Value
+        DataGridView1.RowCount = NRows
+        Dim RowNo As Integer
+
+        For Each item In tableDefXDoc.<TableDefinition>.<Columns>.<Column>
+            RowNo = item.<OrdinalPosition>.Value
+            DataGridView1.Rows(RowNo - 1).Cells(0).Value = item.<ColumnName>.Value 'Write the Column Name.
+
+            '        'List of database data types:
+            '        'http://support.microsoft.com/kb/320435
+
+            '        'Visual Basic data types:
+            '        'System.Boolean
+            '        'System.Byte
+            '        'System.Char
+            '        'System.DateTime
+            '        'System.Decimal
+            '        'System.Double
+            '        'System.Int16
+            '        'System.Int32
+            '        'System.Int64
+            '        'System.Object
+            '        'System.SByte
+            '        'System.Single
+            '        'System.String
+            '        'System.UInt16
+            '        'System.UInt32
+            '        'System.UInt64
+
+            Select Case item.<DataType>.Value
+                Case 2 'SmallInt (Short)
+                    'DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Short (Integer)"
+                    DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Short (Integer)"
+                Case 3 'Integer (Long)
+                    'DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Long (Integer)"
+                    DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Long (Integer)"
+                Case 4 'Single
+                    'DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Single"
+                    DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Single"
+                Case 5 'Double
+                    'DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Double"
+                    DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Double"
+                Case 6 'Currency
+                    'DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Currency"
+                    DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Currency"
+                Case 7 'Date (DateTime)
+                    'DataGridView1.Rows(RowNo - 1).Cells(2).Value = "DateTime"
+                    DataGridView1.Rows(RowNo - 1).Cells(1).Value = "DateTime"
+                Case 11 'Boolean (Bit)
+                    'DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Bit (Boolean)"
+                    DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Bit (Boolean)"
+                Case 17 'UnsignedTinyInt (Byte)
+                    'DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Byte"
+                    DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Byte"
+                Case 72 'Guid (GUID)
+                    'DataGridView1.Rows(RowNo - 1).Cells(2).Value = "GUID"
+                    DataGridView1.Rows(RowNo - 1).Cells(1).Value = "GUID"
+                      'View Schema: Data Types: 
+                            'Type Name  Provider Db Type    Native Data Type
+                            'BigBinary  204                 128 (Column size: 4000)
+                            'LongBinary 205                 128 (Column size: 1073741823)
+                            'VarBinary  204                 128 (Column size: 510) (Max length parameter required)
+                Case 128 'Binary
+                    If item.<CharMaxLength>.Value = 4000 Then
+                        'DataGridView1.Rows(RowNo - 1).Cells(2).Value = "BigBinary"
+                        DataGridView1.Rows(RowNo - 1).Cells(1).Value = "BigBinary"
+                    ElseIf item.<CharMaxLength>.Value = 1073741823 Then
+                        'DataGridView1.Rows(RowNo - 1).Cells(2).Value = "LongBinary"
+                        DataGridView1.Rows(RowNo - 1).Cells(1).Value = "LongBinary"
+                    Else
+                        'DataGridView1.Rows(RowNo - 1).Cells(2).Value = "VarBinary"
+                        DataGridView1.Rows(RowNo - 1).Cells(1).Value = "VarBinary"
+                        'DataGridView1.Rows(RowNo - 1).Cells(3).Value = item.<CharMaxLength>.Value
+                        DataGridView1.Rows(RowNo - 1).Cells(2).Value = item.<CharMaxLength>.Value
+                    End If
+
+                Case 130 'WChar
+                    'DataGridView1.Rows(RowNo - 1).Cells(2).Value = "VarChar"
+                    DataGridView1.Rows(RowNo - 1).Cells(1).Value = "VarChar"
+                    'DataGridView1.Rows(RowNo - 1).Cells(3).Value = item.<CharMaxLength>.Value
+                    DataGridView1.Rows(RowNo - 1).Cells(2).Value = item.<CharMaxLength>.Value
+
+                Case 131 'Numeric (Decimal)
+                    'DataGridView1.Rows(RowNo - 1).Cells(2).Value = "Decimal"
+                    DataGridView1.Rows(RowNo - 1).Cells(1).Value = "Decimal"
+                    DataGridView1.Rows(RowNo - 1).Cells(3).Value = item.<Precision>.Value
+                    DataGridView1.Rows(RowNo - 1).Cells(4).Value = item.<Scale>.Value
+                Case Else
+                    Main.Message.SetWarningStyle()
+                    Main.Message.Add("Unrecognized data type: " & item.<DataType>.Value & vbCrLf)
+                    Main.Message.SetNormalStyle()
+            End Select
+
+            If item.<IsNullable>.Value = "True" Then
+                'DataGridView1.Rows(RowNo - 1).Cells(4).Value = True
+                DataGridView1.Rows(RowNo - 1).Cells(5).Value = "Null"
+            Else
+                'DataGridView1.Rows(RowNo - 1).Cells(4).Value = False
+                DataGridView1.Rows(RowNo - 1).Cells(5).Value = "Not Null"
+            End If
+
+            If item.<AutoIncrement>.Value = "true" Then
+                'DataGridView1.Rows(RowNo - 1).Cells(5).Value = True
+                DataGridView1.Rows(RowNo - 1).Cells(6).Value = "Auto Increment"
+            Else
+                'DataGridView1.Rows(RowNo - 1).Cells(5).Value = False
+                DataGridView1.Rows(RowNo - 1).Cells(6).Value = ""
+            End If
+
+            If item.<CharMaxLength>.Value = "" Then
+                'DataGridView1.Rows(RowNo - 1).Cells(3).Value = ""
+                DataGridView1.Rows(RowNo - 1).Cells(2).Value = ""
+            Else
+                'DataGridView1.Rows(RowNo - 1).Cells(3).Value = item.<CharMaxLength>.Value
+                DataGridView1.Rows(RowNo - 1).Cells(2).Value = item.<CharMaxLength>.Value
+            End If
+
+            If item.<Description>.Value = "" Then
+                DataGridView1.Rows(RowNo - 1).Cells(8).Value = ""
+            Else
+                DataGridView1.Rows(RowNo - 1).Cells(8).Value = item.<Description>.Value
+            End If
+
+        Next
+
+
+        For Each item In tableDefXDoc.<TableDefinition>.<PrimaryKeys>.<Key>
+            PrimaryKeyColName = item.Value
+            For I = 1 To DataGridView1.Rows.Count
+                If DataGridView1.Rows(I - 1).Cells(0).Value = PrimaryKeyColName Then
+                    'DataGridView1.Rows(I - 1).Cells(1).Value = True
+                    DataGridView1.Rows(I - 1).Cells(7).Value = "Primary Key"
+                Else
+
+                End If
+            Next
+        Next
+
+        For Each item In tableDefXDoc.<TableDefinition>.<Relations>.<Relation>
+            DataGridView3.Rows.Add(item.<RelationName>.Value, item.<ChildTable>.Value, item.<ChildColumn>.Value)
+        Next
+
+    End Sub
+
+    Private Sub btnInsert_Click(sender As Object, e As EventArgs) Handles btnInsert.Click
+        'Insert a row in the Table Definition grid:
+
+        Dim SelRow As Integer
+
+        If DataGridView1.Rows.Count = 0 Then
+            DataGridView1.Rows.Insert(0)
+        Else
+            If DataGridView1.SelectedCells.Count = 0 Then
+                Main.Message.AddWarning("A row must be selected on the Table Definition grid!" & vbCrLf)
+            Else
+                SelRow = DataGridView1.SelectedCells.Item(0).RowIndex
+                If DataGridView1.Rows(SelRow).IsNewRow = True Then 'Uncommited row - new row cannot be appended
+                    Main.Message.AddWarning("Uncommitted row - a new row cannot be appended. Enter settings in the selected row." & vbCrLf)
+                Else
+                    DataGridView1.Rows.Insert(SelRow + 1)
+                End If
+            End If
+        End If
+
+    End Sub
+
+    Private Sub btnMoveUp_Click(sender As Object, e As EventArgs) Handles btnMoveUp.Click
+        'Move the selected row up.
+
+        Dim SelRow As Integer
+
+        If DataGridView1.Rows.Count = 0 Then
+            Main.Message.AddWarning("There are no rows to move." & vbCrLf)
+        Else
+            If DataGridView1.SelectedCells.Count = 0 Then
+                Main.Message.AddWarning("A row must be selected on the Table Definition grid!" & vbCrLf)
+            Else
+                SelRow = DataGridView1.SelectedCells.Item(0).RowIndex
+                If DataGridView1.Rows(SelRow).IsNewRow = True Then 'Uncommited row - cannot be deleted
+                    Main.Message.AddWarning("Uncommitted row - cannot be moved." & vbCrLf)
+                Else
+                    If SelRow = 0 Then
+                        Main.Message.AddWarning("The selected row is already at the top of the grid." & vbCrLf)
+                    Else
+                        Dim TempColName As String = ""
+                        Dim TempType As String = ""
+                        Dim TempSize As String = ""
+                        Dim TempPrecision As String = ""
+                        Dim TempScale As String = ""
+                        Dim TempNullOrNot As String = ""
+                        Dim TempAutoInc As String = ""
+                        Dim TempPrimKey As String = ""
+                        Dim TempDescr As String = ""
+
+                        'Save the current row settings:
+                        TempColName = DataGridView1.Rows(SelRow).Cells(0).Value
+                        TempType = DataGridView1.Rows(SelRow).Cells(1).Value
+                        TempSize = DataGridView1.Rows(SelRow).Cells(2).Value
+                        TempPrecision = DataGridView1.Rows(SelRow).Cells(3).Value
+                        TempScale = DataGridView1.Rows(SelRow).Cells(4).Value
+                        TempNullOrNot = DataGridView1.Rows(SelRow).Cells(5).Value
+                        TempAutoInc = DataGridView1.Rows(SelRow).Cells(6).Value
+                        TempPrimKey = DataGridView1.Rows(SelRow).Cells(7).Value
+                        TempDescr = DataGridView1.Rows(SelRow).Cells(8).Value
+
+                        'Move the row above down:
+                        DataGridView1.Rows(SelRow).Cells(0).Value = DataGridView1.Rows(SelRow - 1).Cells(0).Value
+                        DataGridView1.Rows(SelRow).Cells(1).Value = DataGridView1.Rows(SelRow - 1).Cells(1).Value
+                        DataGridView1.Rows(SelRow).Cells(2).Value = DataGridView1.Rows(SelRow - 1).Cells(2).Value
+                        DataGridView1.Rows(SelRow).Cells(3).Value = DataGridView1.Rows(SelRow - 1).Cells(3).Value
+                        DataGridView1.Rows(SelRow).Cells(4).Value = DataGridView1.Rows(SelRow - 1).Cells(4).Value
+                        DataGridView1.Rows(SelRow).Cells(5).Value = DataGridView1.Rows(SelRow - 1).Cells(5).Value
+                        DataGridView1.Rows(SelRow).Cells(6).Value = DataGridView1.Rows(SelRow - 1).Cells(6).Value
+                        DataGridView1.Rows(SelRow).Cells(7).Value = DataGridView1.Rows(SelRow - 1).Cells(7).Value
+                        DataGridView1.Rows(SelRow).Cells(8).Value = DataGridView1.Rows(SelRow - 1).Cells(8).Value
+
+                        'Replace the row above with the saved row:
+                        DataGridView1.Rows(SelRow - 1).Cells(0).Value = TempColName
+                        DataGridView1.Rows(SelRow - 1).Cells(1).Value = TempType
+                        DataGridView1.Rows(SelRow - 1).Cells(2).Value = TempSize
+                        DataGridView1.Rows(SelRow - 1).Cells(3).Value = TempPrecision
+                        DataGridView1.Rows(SelRow - 1).Cells(4).Value = TempScale
+                        DataGridView1.Rows(SelRow - 1).Cells(5).Value = TempNullOrNot
+                        DataGridView1.Rows(SelRow - 1).Cells(6).Value = TempAutoInc
+                        DataGridView1.Rows(SelRow - 1).Cells(7).Value = TempPrimKey
+                        DataGridView1.Rows(SelRow - 1).Cells(8).Value = TempDescr
+
+                        'Move the row selection up
+                        DataGridView1.ClearSelection()
+                        DataGridView1.Rows(SelRow - 1).Selected = True
+
+                    End If
+                End If
+            End If
+        End If
+
+    End Sub
+
+    Private Sub btnMoveDown_Click(sender As Object, e As EventArgs) Handles btnMoveDown.Click
+        'Move the selected row down.
+
+        Dim SelRow As Integer
+
+        If DataGridView1.Rows.Count = 0 Then
+            Main.Message.AddWarning("There are no rows to move." & vbCrLf)
+        Else
+            If DataGridView1.SelectedCells.Count = 0 Then
+                Main.Message.AddWarning("A row must be selected on the Table Definition grid!" & vbCrLf)
+            Else
+                SelRow = DataGridView1.SelectedCells.Item(0).RowIndex
+                If DataGridView1.Rows(SelRow).IsNewRow = True Then 'Uncommited row - cannot be deleted
+                    Main.Message.AddWarning("Uncommitted row - cannot be moved." & vbCrLf)
+                Else
+                    If SelRow = DataGridView1.Rows.Count - 1 Then
+                        Main.Message.AddWarning("The selected row is already at the bottom of the grid." & vbCrLf)
+                    Else
+                        Dim TempColName As String = ""
+                        Dim TempType As String = ""
+                        Dim TempSize As String = ""
+                        Dim TempPrecision As String = ""
+                        Dim TempScale As String = ""
+                        Dim TempNullOrNot As String = ""
+                        Dim TempAutoInc As String = ""
+                        Dim TempPrimKey As String = ""
+                        Dim TempDescr As String = ""
+
+                        'Save the current row settings:
+                        TempColName = DataGridView1.Rows(SelRow).Cells(0).Value
+                        TempType = DataGridView1.Rows(SelRow).Cells(1).Value
+                        TempSize = DataGridView1.Rows(SelRow).Cells(2).Value
+                        TempPrecision = DataGridView1.Rows(SelRow).Cells(3).Value
+                        TempScale = DataGridView1.Rows(SelRow).Cells(4).Value
+                        TempNullOrNot = DataGridView1.Rows(SelRow).Cells(5).Value
+                        TempAutoInc = DataGridView1.Rows(SelRow).Cells(6).Value
+                        TempPrimKey = DataGridView1.Rows(SelRow).Cells(7).Value
+                        TempDescr = DataGridView1.Rows(SelRow).Cells(8).Value
+
+                        'Move the row below up:
+                        DataGridView1.Rows(SelRow).Cells(0).Value = DataGridView1.Rows(SelRow + 1).Cells(0).Value
+                        DataGridView1.Rows(SelRow).Cells(1).Value = DataGridView1.Rows(SelRow + 1).Cells(1).Value
+                        DataGridView1.Rows(SelRow).Cells(2).Value = DataGridView1.Rows(SelRow + 1).Cells(2).Value
+                        DataGridView1.Rows(SelRow).Cells(3).Value = DataGridView1.Rows(SelRow + 1).Cells(3).Value
+                        DataGridView1.Rows(SelRow).Cells(4).Value = DataGridView1.Rows(SelRow + 1).Cells(4).Value
+                        DataGridView1.Rows(SelRow).Cells(5).Value = DataGridView1.Rows(SelRow + 1).Cells(5).Value
+                        DataGridView1.Rows(SelRow).Cells(6).Value = DataGridView1.Rows(SelRow + 1).Cells(6).Value
+                        DataGridView1.Rows(SelRow).Cells(7).Value = DataGridView1.Rows(SelRow + 1).Cells(7).Value
+                        DataGridView1.Rows(SelRow).Cells(8).Value = DataGridView1.Rows(SelRow + 1).Cells(8).Value
+
+                        'Replace the row above with the saved row:
+                        DataGridView1.Rows(SelRow + 1).Cells(0).Value = TempColName
+                        DataGridView1.Rows(SelRow + 1).Cells(1).Value = TempType
+                        DataGridView1.Rows(SelRow + 1).Cells(2).Value = TempSize
+                        DataGridView1.Rows(SelRow + 1).Cells(3).Value = TempPrecision
+                        DataGridView1.Rows(SelRow + 1).Cells(4).Value = TempScale
+                        DataGridView1.Rows(SelRow + 1).Cells(5).Value = TempNullOrNot
+                        DataGridView1.Rows(SelRow + 1).Cells(6).Value = TempAutoInc
+                        DataGridView1.Rows(SelRow + 1).Cells(7).Value = TempPrimKey
+                        DataGridView1.Rows(SelRow + 1).Cells(8).Value = TempDescr
+
+                        'Move the row selection down
+                        DataGridView1.ClearSelection()
+                        DataGridView1.Rows(SelRow + 1).Selected = True
+
+                    End If
+                End If
+            End If
+        End If
+
+    End Sub
+
+    Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
+        'Delete a row from the Table Definition grid:
+
+        Dim SelRow As Integer
+
+        If DataGridView1.Rows.Count = 0 Then
+            Main.Message.AddWarning("There are no rows to delete." & vbCrLf)
+        Else
+            If DataGridView1.SelectedCells.Count = 0 Then
+                Main.Message.AddWarning("A row must be selected on the Table Definition grid!" & vbCrLf)
+            Else
+                SelRow = DataGridView1.SelectedCells.Item(0).RowIndex
+                If DataGridView1.Rows(SelRow).IsNewRow = True Then 'Uncommited row - cannot be deleted
+                    Main.Message.AddWarning("Uncommitted row - cannot be deleted" & vbCrLf)
+                Else
+                    DataGridView1.Rows.RemoveAt(SelRow)
+                End If
+            End If
+        End If
+    End Sub
+
+    Private Sub TabPage1_Click(sender As Object, e As EventArgs) Handles TabPage1.Click
+
+    End Sub
+
+    Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
+        'Save the Table Definition in a file:
+
+        Dim FileName As String = Trim(txtTableDefFile.Text)
+        If FileName.EndsWith(".TableDef") Then
+            'FileName has the correct extension.
+        Else
+            'Add the file extension to FileName
+            FileName = FileName & ".TableDef"
+            txtTableDefFile.Text = FileName
+        End If
+
+        'Check if the specified file name already exists in the project:
+        If Main.Project.DataFileExists(FileName) Then
+            Dim dr As System.Windows.Forms.DialogResult
+            dr = MessageBox.Show("Press 'Yes' to overwrite the existing file.", "Notice", MessageBoxButtons.YesNo)
+            If dr = System.Windows.Forms.DialogResult.Yes Then
+                'Continue
+            Else
+                Exit Sub
+            End If
+        End If
+
+        'Build the Table Definition XDocument:
+        Dim doc = New XDocument 'Create the XDocument to hold the XML data.
+
+        'Add the XML declaration:
+        Dim decl = New XDeclaration("1.0", "utf-8", "yes")
+        doc.Declaration = decl
+
+        doc.Add(New XComment(""))
+        doc.Add(New XComment("Exported table definition."))
+
+        Dim tableData As New XElement("TableDefinition")
+
+        tableData.Add(New XComment(""))
+        tableData.Add(New XComment("Table summary."))
+
+        'Add table summary
+        Dim summary = New XElement("Summary")
+        summary.Add(New XElement("Database", Trim(txtDatabase.Text)))
+        summary.Add(New XElement("TableName", Trim(txtTableName.Text)))
+        Dim NColumns As Integer = DataGridView1.Rows.Count
+        summary.Add(New XElement("NumberOfColumns", NColumns))
+        Dim NPrimaryKeys As Integer
+        Dim I As Integer = 0
+        For I = 0 To NColumns - 1
+            If DataGridView1.Rows(I).Cells(7).Value = "Primary Key" Then NPrimaryKeys += 1
+        Next
+        summary.Add(New XElement("NumberOfPrimaryKeys", NPrimaryKeys))
+
+        tableData.Add(summary)
+
+        tableData.Add(New XComment(""))
+        tableData.Add(New XComment("Primary keys."))
+        Dim primaryKeys = New XElement("PrimaryKeys")
+        For I = 0 To NColumns - 1
+            If DataGridView1.Rows(I).Cells(7).Value = "Primary Key" Then
+                primaryKeys.Add(New XElement("Key", DataGridView1.Rows(I).Cells(0).Value))
+            End If
+        Next
+
+        tableData.Add(primaryKeys)
+
+        Dim columns As New XElement("Columns")
+
+        For I = 0 To NColumns - 1
+            Dim column As New XElement("Column")
+            column.Add(New XElement("ColumnName", DataGridView1.Rows(I).Cells(0).Value))
+            column.Add(New XElement("OrdinalPosition", I + 1))
+            If DataGridView1.Rows(I).Cells(5).Value = "Null" Then
+                column.Add(New XElement("IsNullable", "True"))
+            Else
+                column.Add(New XElement("IsNullable", "False"))
+            End If
+            Select Case DataGridView1.Rows(I).Cells(1).Value
+                Case "Short (Integer)"
+                    column.Add(New XElement("DataType", "2"))
+                    column.Add(New XElement("DataTypeName", "SmallInt"))
+                Case "Long (Integer)"
+                    column.Add(New XElement("DataType", "3"))
+                    column.Add(New XElement("DataTypeName", "Integer"))
+                Case "Single"
+                    column.Add(New XElement("DataType", "4"))
+                    column.Add(New XElement("DataTypeName", "Single"))
+                Case "Double"
+                    column.Add(New XElement("DataType", "5"))
+                    column.Add(New XElement("DataTypeName", "Double"))
+                Case "Currency"
+                    column.Add(New XElement("DataType", "6"))
+                    column.Add(New XElement("DataTypeName", "Currency"))
+                Case "DateTime"
+                    column.Add(New XElement("DataType", "7"))
+                    column.Add(New XElement("DataTypeName", "Date"))
+                Case "Bit (Boolean)"
+                    column.Add(New XElement("DataType", "11"))
+                    column.Add(New XElement("DataTypeName", "Boolean "))
+                Case "Byte"
+                    column.Add(New XElement("DataType", "17"))
+                    column.Add(New XElement("DataTypeName", "UnsignedTinyInt"))
+                Case "GUID"
+                    column.Add(New XElement("DataType", "72"))
+                    column.Add(New XElement("DataTypeName", "Guid"))
+                Case "BigBinary"
+                    column.Add(New XElement("DataType", "128"))
+                    column.Add(New XElement("DataTypeName", "Binary "))
+                Case "LongBinary"
+                    column.Add(New XElement("DataType", "128"))
+                    column.Add(New XElement("DataTypeName", "Binary "))
+                Case "VarBinary"
+                    column.Add(New XElement("DataType", "128"))
+                    column.Add(New XElement("DataTypeName", "Binary "))
+                Case "VarChar"
+                    column.Add(New XElement("DataType", "130"))
+                    column.Add(New XElement("DataTypeName", "WChar"))
+                Case "Decimal"
+                    column.Add(New XElement("DataType", "131"))
+                    column.Add(New XElement("DataTypeName", "Numeric "))
+                Case Else
+                    Main.Message.AddWarning("Unknown data type: " & DataGridView1.Rows(I).Cells(1).Value & vbCrLf)
+            End Select
+
+            column.Add(New XElement("CharMaxLength", DataGridView1.Rows(I).Cells(2).Value))
+            column.Add(New XElement("AutoIncrement", DataGridView1.Rows(I).Cells(6).Value))
+            column.Add(New XElement("Description", DataGridView1.Rows(I).Cells(8).Value))
+
+            columns.Add(column)
+        Next
+
+        tableData.Add(New XComment(""))
+        tableData.Add(New XComment("List of column definitions."))
+        tableData.Add(columns)
+
+        'Add Relations:
+        Dim relations = New XElement("Relations")
+        Dim RelCount As Integer = DataGridView3.Rows.Count
+
+        relations.Add(New XElement("NumberOfChildRelations", RelCount))
+
+        For I = 0 To RelCount - 1
+            Dim relation = New XElement("Relation")
+            Dim relName = New XElement("RelationName", DataGridView3.Rows(I).Cells(0).Value)
+            relation.Add(relName)
+            Dim childTable = New XElement("ChildTable", DataGridView3.Rows(I).Cells(1).Value)
+            relation.Add(childTable)
+            Dim childColumn = New XElement("ChildColumn", DataGridView3.Rows(I).Cells(2).Value)
+            relation.Add(childColumn)
+            relations.Add(New XComment(""))
+            relations.Add(relation)
+        Next
+
+        tableData.Add(New XComment(""))
+        tableData.Add(New XComment("List of table relations."))
+        tableData.Add(relations)
+
+        doc.Add(tableData)
+
+        Main.Project.SaveXmlData(FileName, doc)
+
+    End Sub
+
+
 
 #End Region 'Form Methods ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
