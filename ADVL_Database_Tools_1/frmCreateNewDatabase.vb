@@ -232,13 +232,17 @@ Public Class frmCreateNewDatabase
             If Settings.<FormSettings>.<DBDefFilePath>.Value <> Nothing Then
                 databaseDefFileName = Settings.<FormSettings>.<DBDefFilePath>.Value
                 txtDefinitionFilePath.Text = databaseDefFileName
-                databaseDefXDoc = XDocument.Load(databaseDefFileName)
-                'Read database name, directory and description:
-                txtDefaultName.Text = databaseDefXDoc.<DatabaseDefinition>.<Summary>.<DatabaseName>.Value
-                txtDefaultDir.Text = databaseDefXDoc.<DatabaseDefinition>.<Summary>.<DatabaseDirectory>.Value
-                txtDescription.Text = databaseDefXDoc.<DatabaseDefinition>.<Description>.Value
+                'databaseDefXDoc = XDocument.Load(databaseDefFileName)
+                Main.Project.ReadXmlData(databaseDefFileName, databaseDefXDoc)
+                If IsNothing(databaseDefXDoc) Then
+                    'databaseDefXDoc is blank.
+                Else
+                    'Read database name, directory and description:
+                    txtDefaultName.Text = databaseDefXDoc.<DatabaseDefinition>.<Summary>.<DatabaseName>.Value
+                    txtDefaultDir.Text = databaseDefXDoc.<DatabaseDefinition>.<Summary>.<DatabaseDirectory>.Value
+                    txtDescription.Text = databaseDefXDoc.<DatabaseDefinition>.<Description>.Value
+                End If
             End If
-
             If Settings.<FormSettings>.<NewAccessDatabaseName>.Value <> Nothing Then NewAccessDatabaseName = Settings.<FormSettings>.<NewAccessDatabaseName>.Value
             If Settings.<FormSettings>.<NewAccessDatabaseDirectory>.Value <> Nothing Then NewAccessDatabaseDirectory = Settings.<FormSettings>.<NewAccessDatabaseDirectory>.Value
             If Settings.<FormSettings>.<NewAccessDBDefFilePath>.Value <> Nothing Then NewAccessDBDefFilePath = Settings.<FormSettings>.<NewAccessDBDefFilePath>.Value
@@ -1328,6 +1332,10 @@ Public Class frmCreateNewDatabase
 
         If DatabaseType = "Access" Then
             CreateNewDatabase()
+        ElseIf DatabaseType = "Access_mdb" Then
+            CreateNewDatabase()
+        ElseIf DatabaseType = "Access_accdb" Then
+            CreateNewDatabase()
         ElseIf DatabaseType = "SQLite" Then
             CreateNewSqLiteDatabase()
         Else
@@ -1582,6 +1590,9 @@ Public Class frmCreateNewDatabase
     End Sub
 
 
+    Private Sub txtNewDatabaseName_TextChanged(sender As Object, e As EventArgs) Handles txtNewDatabaseName.TextChanged
+
+    End Sub
 
     Private Sub txtNewDatabaseName_LostFocus(sender As Object, e As EventArgs) Handles txtNewDatabaseName.LostFocus
         'The new database name has been specified:
@@ -1692,9 +1703,7 @@ Public Class frmCreateNewDatabase
         'Main.Message.Add("rbSQLite check changed." & vbCrLf)
     End Sub
 
-    Private Sub txtNewDatabaseName_TextChanged(sender As Object, e As EventArgs) Handles txtNewDatabaseName.TextChanged
 
-    End Sub
 
 
 

@@ -650,47 +650,51 @@
         Dim DataType As String
         DataType = DataGridView1.Rows(RowNo).Cells(1).Value
         Dim Size As Integer
+        Try
+            Select Case DataType
+                Case "Short (Integer)"
+                    DataTypeString = "SHORT"
+                Case "Long (Integer)"
+                    DataTypeString = "LONG"
+                Case "Single"
+                    DataTypeString = "SINGLE"
+                Case "Double"
+                    DataTypeString = "DOUBLE"
+                Case "Currency"
+                    DataTypeString = "CURRENCY"
+                Case "DateTime"
+                    DataTypeString = "DATETIME"
+                Case "Bit (Boolean)"
+                    DataTypeString = "BIT"
+                Case "Byte"
+                    DataTypeString = "BYTE"
+                Case "GUID"
+                    DataTypeString = "GUID"
+                Case "BigBinary"
+                    DataTypeString = "BIGBINARY"
+                Case "LongBinary"
+                    DataTypeString = "LONGBINARY"
+                Case "VarBinary"
+                    Size = DataGridView1.Rows(RowNo).Cells(2).Value
+                    DataTypeString = "VARBINARY (" & Size & ")"
+                Case "LongText"
+                    DataTypeString = "LONGTEXT"
+                Case "VarChar"
+                    Size = DataGridView1.Rows(RowNo).Cells(2).Value
+                    DataTypeString = "VARCHAR (" & Size & ")"
+                Case "Decimal"
+                    Dim Precision As Integer
+                    Precision = DataGridView1.Rows(RowNo).Cells(3).Value
+                    Dim Scale As Integer
+                    Scale = DataGridView1.Rows(RowNo).Cells(4).Value
+                    DataTypeString = "DECIMAL (" & Precision & "," & Scale & ")"
+                Case Else
+                    Main.Message.AddWarning("Unknown data type: " & DataType & vbCrLf)
+            End Select
+        Catch ex As Exception
+            Main.Message.AddWarning(ex.Message & vbCrLf)
+        End Try
 
-        Select Case DataType
-            Case "Short (Integer)"
-                DataTypeString = "SHORT"
-            Case "Long (Integer)"
-                DataTypeString = "LONG"
-            Case "Single"
-                DataTypeString = "SINGLE"
-            Case "Double"
-                DataTypeString = "DOUBLE"
-            Case "Currency"
-                DataTypeString = "CURRENCY"
-            Case "DateTime"
-                DataTypeString = "DATETIME"
-            Case "Bit (Boolean)"
-                DataTypeString = "BIT"
-            Case "Byte"
-                DataTypeString = "BYTE"
-            Case "GUID"
-                DataTypeString = "GUID"
-            Case "BigBinary"
-                DataTypeString = "BIGBINARY"
-            Case "LongBinary"
-                DataTypeString = "LONGBINARY"
-            Case "VarBinary"
-                Size = DataGridView1.Rows(RowNo).Cells(2).Value
-                DataTypeString = "VARBINARY (" & Size & ")"
-            Case "LongText"
-                DataTypeString = "LONGTEXT"
-            Case "VarChar"
-                Size = DataGridView1.Rows(RowNo).Cells(2).Value
-                DataTypeString = "VARCHAR (" & Size & ")"
-            Case "Decimal"
-                Dim Precision As Integer
-                Precision = DataGridView1.Rows(RowNo).Cells(3).Value
-                Dim Scale As Integer
-                Scale = DataGridView1.Rows(RowNo).Cells(4).Value
-                DataTypeString = "DECIMAL (" & Precision & "," & Scale & ")"
-            Case Else
-                Main.Message.AddWarning("Unknown data type: " & DataType & vbCrLf)
-        End Select
     End Sub
 
     Private Sub GenerateAlterTableCommand()
@@ -816,7 +820,12 @@
             ElseIf NCols = 1 Then
                 bldCmd.Append(" ([" & lbCreateIndexColumnName.SelectedItem.ToString & "])" & vbCrLf)
             ElseIf NCols > 1 Then
-
+                bldCmd.Append(" ([" & lbCreateIndexColumnName.SelectedItems(0).ToString & "]") ' & "])" & vbCrLf)
+                Dim I As Integer
+                For I = 2 To NCols
+                    bldCmd.Append(", [" & lbCreateIndexColumnName.SelectedItems(I - 1).ToString & "]")
+                Next
+                bldCmd.Append(")" & vbCrLf)
             End If
 
             If Trim(cmbCreateIndexHandleNull.Text) = "" Then

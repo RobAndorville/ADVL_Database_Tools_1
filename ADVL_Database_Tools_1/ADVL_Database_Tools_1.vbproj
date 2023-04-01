@@ -73,10 +73,16 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>ADVL_DatabaseTools_Icon1.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.interop.access.dao, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
@@ -90,6 +96,8 @@
     </Reference>
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
@@ -113,6 +121,12 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmArchive.Designer.vb">
+      <DependentUpon>frmArchive.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmArchive.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmCreateNewDatabase.Designer.vb">
       <DependentUpon>frmCreateNewDatabase.vb</DependentUpon>
     </Compile>
@@ -209,6 +223,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmArchive.resx">
+      <DependentUpon>frmArchive.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmCreateNewDatabase.resx">
       <DependentUpon>frmCreateNewDatabase.vb</DependentUpon>
     </EmbeddedResource>
@@ -254,6 +271,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ADVL_Database_Tools_1_TemporaryKey.pfx" />
+    <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

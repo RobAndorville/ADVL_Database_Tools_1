@@ -250,8 +250,10 @@
                 table.Add(New XElement("TableName", TableName))
                 table.Add(New XElement("NumberOfFields", myColumns.Rows.Count.ToString))
 
-                Query = "Select Top 500 * From " & TableName
-                da = New OleDb.OleDbDataAdapter(Query, myConnection)
+
+            'Query = "Select Top 500 * From " & TableName
+            Query = "Select Top 500 * From [" & TableName & "]"
+            da = New OleDb.OleDbDataAdapter(Query, myConnection)
                 da.MissingSchemaAction = MissingSchemaAction.AddWithKey 'This statement is required to obtain the correct result from the statement: ds.Tables(0).Columns(0).MaxLength (This fixes a Microsoft bug: http://support.microsoft.com/kb/317175 )
                 ds.Clear()
                 ds.Reset()
